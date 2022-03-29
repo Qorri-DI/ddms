@@ -1,7 +1,6 @@
 package com.alpha.ddms.domains;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
