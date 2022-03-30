@@ -3,7 +3,6 @@ package com.alpha.ddms.services;
 import com.alpha.ddms.DTO.DealerDTO;
 import com.alpha.ddms.domains.DealerModel;
 import com.alpha.ddms.repositories.DealerRepository;
-import com.alpha.ddms.repositories.SalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,13 +55,11 @@ public class DealerService {
         }
         return dealerDTOList;
     }
-    public List<DealerDTO> dealerById (String dealerId){
-        List<DealerDTO> dealerDTOList = new ArrayList<>();
+    public DealerDTO dealerById (String dealerId){
         List<DealerModel> ById =dealerRepository.findByDealerId(dealerId);
+        DealerDTO dealerDTO = new DealerDTO();
 
         for(DealerModel dealerModel: ById) {
-
-            DealerDTO dealerDTO = new DealerDTO();
             dealerDTO.setDealerId(dealerId);
             dealerDTO.setDealerName(dealerModel.getDealer_name());
             dealerDTO.setDealerClass(dealerModel.getDealer_class());
@@ -71,9 +68,9 @@ public class DealerService {
             dealerDTO.setDealerExCode(dealerModel.getDealer_ext_code());
             dealerDTO.setDealerStatus(dealerModel.getDealer_status());
 
-            dealerDTOList.add(dealerDTO);
+
         }
-        return dealerDTOList;
+        return dealerDTO;
     }
 
 }

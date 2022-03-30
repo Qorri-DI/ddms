@@ -1,7 +1,5 @@
 package com.alpha.ddms.DTO;
 
-import com.alpha.ddms.domains.DealerModel;
-
 import java.util.List;
 
 public class DealerDtoPost {

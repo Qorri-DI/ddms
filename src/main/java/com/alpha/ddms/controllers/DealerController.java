@@ -126,7 +126,7 @@ public class DealerController {
         @PathVariable String dealerId
         ){
 
-        List<DealerDTO> dealerDTOList = dealerService.dealerById(dealerId);
+        DealerDTO dealerDTOList = dealerService.dealerById(dealerId);
         Optional<DealerModel> dealerCode = dealerService.findByCode(dealerId);
         if(!dealerCode.isPresent()){
             return new ResponseEntity<>("No Data Found",HttpStatus.NO_CONTENT);
