@@ -33,7 +33,7 @@ public class OrderService {
         return orderRepository.findById(orderId);
     }
 
-    public List<OrderModel> getAllOeder(String dealerId,String platNomor,
+    public List<OrderModel> getAllOrder(String dealerId,String platNomor,
                                         String nomor_mesin,
                                         String nomor_rangka,
                                         String paymentStatus,
