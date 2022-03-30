@@ -75,6 +75,7 @@ public class DealerController {
             dealerModel.setDealer_status(dealer_status);
             dealerService.updateDealer(dealer_code,dealer_name,dealer_class,telp_number,alamat,dealer_ext_code,dealer_status);
 
+            List<DealerDTO> dtoList = new ArrayList<>();
             dto.setDealerId(dealer_code);
             dto.setDealerName(dealer_name);
             dto.setDealerClass(dealer_class);
@@ -82,12 +83,18 @@ public class DealerController {
             dto.setAlamat(alamat);
             dto.setDealerExCode(dealer_ext_code);
             dto.setDealerStatus(dealer_status);
+            dtoList.add(dto);
 
+            DealerDtoPost dealerDtoPost= new DealerDtoPost();
+            dealerDtoPost.setCode(201);
+            dealerDtoPost.setData(dtoList);
+            dealerDtoPost.setMassage("Process Successed");
+            dealerDtoPost.setStatus("S");
             response.put("code",201);
             response.put("data",dto);
             response.put("message","Process Successed");
             response.put("status","S");
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(dealerDtoPost, HttpStatus.OK);
         }
     }
     @GetMapping("listAll")
@@ -103,11 +110,9 @@ public class DealerController {
         Map<String,Object> ret = new HashMap<>();
         List<DealerDTO> response = dealerService.listAll(dealer_code,dealer_status,dealer_name,offset,limit);
 
-
         DealerDTOlist dealerDTOlist= new DealerDTOlist();
         dealerDTOlist.setListDealer(response);
         dealerDTOlist.setDataOfRecord(response.size());
-
 
         ret.put("Status","S");
         ret.put("code",201);
@@ -122,8 +127,9 @@ public class DealerController {
         ){
 
         List<DealerDTO> dealerDTOList = dealerService.dealerById(dealerId);
-        if(dealerId.isEmpty()){
-            return new ResponseEntity<>("No Data Found = 204",HttpStatus.BAD_REQUEST);
+        Optional<DealerModel> dealerCode = dealerService.findByCode(dealerId);
+        if(!dealerCode.isPresent()){
+            return new ResponseEntity<>("No Data Found",HttpStatus.NO_CONTENT);
         }else {
             DealerDtoById dealerDtoById= new DealerDtoById();
             dealerDtoById.setStatus("S");
