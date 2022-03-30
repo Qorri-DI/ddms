@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 public class PpnService {
-
     @Autowired
     PpnRepository ppnRepository;
 }
