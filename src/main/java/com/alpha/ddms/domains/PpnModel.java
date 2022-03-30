@@ -1,5 +1,6 @@
 package com.alpha.ddms.domains;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter @Setter
 public class PpnModel {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ppn_id", nullable = false, length = 50)
     private String ppn_id;
 
@@ -23,6 +25,7 @@ public class PpnModel {
     private DealerModel dealerModel;
 
     @Column(name = "effective_start_date", nullable = false)
+    @JsonFormat
     private Date effective_start_date;
 
     @Column(name = "effective_end_date", nullable = true)

@@ -14,8 +14,8 @@ public class DealerService {
     @Autowired
     DealerRepository dealerRepository;
 
-    public DealerModel findById(String dealerId){
+    public Optional<DealerModel> findById(String dealerId){
         Optional<DealerModel> dealerModel = dealerRepository.findById(dealerId);
-        return (!dealerModel.isPresent()) ? null : dealerModel.get();
+        return dealerModel;
     }
 }

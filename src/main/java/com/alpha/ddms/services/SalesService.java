@@ -1,8 +1,13 @@
 package com.alpha.ddms.services;
 
 import com.alpha.ddms.domains.SalesModel;
+import com.alpha.ddms.models.ViewSales;
 import com.alpha.ddms.repositories.SalesRepository;
+import com.alpha.ddms.repositories.ViewSalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,6 +20,8 @@ public class SalesService {
 
     @Autowired
     SalesRepository salesRepository;
+    @Autowired
+    ViewSalesRepository viewSalesRepository;
 
     public SalesModel findSupervisorId(String supervisorId){
         Optional<SalesModel> salesModel = salesRepository.findSupervisorId(supervisorId);
@@ -25,9 +32,9 @@ public class SalesService {
         return salesRepository.save(data);
     }
 
-    public SalesModel findById(String salesId){
+    public Optional<SalesModel> findById(String salesId){
         Optional<SalesModel> salesModel = salesRepository.findById(salesId);
-        return !salesModel.isPresent() ? null : salesModel.get();
+        return salesModel;
     }
 
     public String findLatestId(String salesId){
@@ -35,7 +42,11 @@ public class SalesService {
         return !salesModel.isPresent() ? null : salesModel.get().getSales_id();
     }
 
-    public List<SalesModel> searchSales(String salesName, String dealerId, String salesStatus, int offset, int limit){
-        return salesRepository.searchSalesModel(salesName, dealerId, salesStatus, offset, limit);
+//    public List<SalesModel> searchSales(String salesName, String dealerId, String salesStatus, int offset, int limit){
+//        return salesRepository.searchSalesModel(salesName, dealerId, salesStatus, offset, limit);
+//    }
+
+    public Page<ViewSales> searchSales(String salesName, String dealerId, String salesStatus, int page, int limit){
+        return viewSalesRepository.searchSalesModel(salesName, dealerId, salesStatus, PageRequest.of(page,limit));
     }
 }
