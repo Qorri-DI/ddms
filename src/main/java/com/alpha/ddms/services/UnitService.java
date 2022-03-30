@@ -14,31 +14,24 @@ import java.util.*;
 @Transactional
 public class UnitService {
     @Autowired UnitRepository unitRepository;
-    @Autowired DealerRepository dealerRepository;
-    public UnitModel saveData(
-            String unitcode,
-            String unitseriesname,
-            String dealerid,
-            int unitquantity,
-            String unitcolor,
-            String unitstatus,
-            int averagecost
-    ){
-        DealerModel dealer = dealerRepository.getById(dealerid);
-        UnitModel unit = new UnitModel();
-        unit.setUnit_id(unitcode);
-        unit.setUnit_series_name(unitseriesname);
-        unit.setDealerModel(dealer);
-        unit.setUnit_quantity(unitquantity);
-        unit.setUnit_color(unitcolor);
-        unit.setUnit_status(unitstatus);
-        unit.setAverage_cost(averagecost);
+    public UnitModel saveData(UnitModel unit){
         return unitRepository.save(unit);
     }
     public List<UnitModel>findByIdUnit(String id){
         List<UnitModel> unitModelList = new ArrayList<>();
         unitModelList = unitRepository.findByIdUnit(id);
         return unitModelList;
+    }
+    public UnitModel findIdUnit(String idUnit){
+        Optional<UnitModel> unitModel = unitRepository.findById(idUnit);
+        return !unitModel.isPresent() ? null : unitModel.get();
+    }
+    public Optional<UnitModel> findByIdunit(String idUnit){
+        return unitRepository.findById(idUnit);
+    }
+    public String findByIdLast(String IdUnit){
+        Optional<UnitModel>unitModel=unitRepository.findLatestId(IdUnit);
+        return !unitModel.isPresent() ? null : unitModel.get().getUnit_id();
     }
     public List<UnitDto>findByUnit(
             String unitstatus,
@@ -49,7 +42,6 @@ public class UnitService {
     ){
 
         Page<UnitModel> listAll = unitRepository.findByData((PageRequest.of(offset,limit)),dealerId,unitstatus,unitseriesname);
-//        List<UnitModel> listAll = unitRepository.findByData2(dealerRepository.findById(dealerId).get().getDealer_code(),unitstatus,unitseriesname);
         List<UnitDto>unitDtoList = new ArrayList<>();
         List<UnitModel>unitList = listAll.toList();
         for (UnitModel unit : unitList){
@@ -65,9 +57,19 @@ public class UnitService {
         }
         return unitDtoList;
     }
-//    public List<ResponDto> unitListAll(){
-//        List<ResponDto> responDtos = new ArrayList<>();
-//        List<UnitDto>unitDtoList = findByUnit()
-//        responDtos
-//    }
+    public UnitDto UnitId(String idUnit){
+        List<UnitModel>unitID = unitRepository.findByIdUnit(idUnit);
+        UnitDto unitDto = new UnitDto();
+
+        for (UnitModel unit : unitID){
+            unitDto.setUnitCode(unit.getUnit_id());
+            unitDto.setUnitSeriesName(unit.getUnit_series_name());
+            unitDto.setDealerCode(unit.getDealerModel().getDealer_code());
+            unitDto.setUnitQuantity(unit.getUnit_quantity());
+            unitDto.setUnitColor(unit.getUnit_color());
+            unitDto.setUnitStatus(unit.getUnit_status());
+            unitDto.setAverageCost(unit.getAverage_cost());
+        }
+        return unitDto;
+    }
 }

@@ -17,4 +17,8 @@ public class DealerService {
         Optional<DealerModel> data = dealerRepository.findById(idDealer);
         return data.isEmpty() ? null : data.get();
     }
+    public Optional<DealerModel> findById(String idDealer){
+        Optional<DealerModel> dealerModel = dealerRepository.findById(idDealer);
+        return dealerModel;
+    }
 }

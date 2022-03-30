@@ -1,20 +1,19 @@
-package com.alpha.ddms.domains;
+package com.alpha.ddms.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.alpha.ddms.domains.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "mst_sales")
+@Immutable
 @Getter @Setter
-public class SalesModel implements Serializable {
+public class ViewSales {
+
     @Id
-    @Column(name ="sales_id", nullable = false, length = 50)
+    @Column(name ="sales_id")
     @JsonProperty(value = "salesId")
     private String sales_id;
 
@@ -47,10 +46,6 @@ public class SalesModel implements Serializable {
     public String getSalesModel() {
         return salesModel.getSales_id();
     }
-
-//    public String getSalesModelName(){
-//        return salesModel.getSalesModelName();
-//    }
 
     public String getDealerModel() {
         return dealerModel.getDealer_code();

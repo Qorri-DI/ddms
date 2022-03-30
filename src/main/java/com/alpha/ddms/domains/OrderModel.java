@@ -1,6 +1,7 @@
 package com.alpha.ddms.domains;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,7 +28,7 @@ public class OrderModel {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
-    private CustomerModel CustomerModel;
+    private CustomerModel customerModel;
 
     @Column(name = "minimum_payment", nullable = false)
     private float minimum_payment;
