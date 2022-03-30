@@ -2,10 +2,12 @@ package com.alpha.ddms.dto;
 
 import lombok.*;
 
+import java.util.*;
+
 @Getter @Setter
 public class ResponDto {
-    private String code;
     private String status;
+    private int code;
     private String message;
-    private String data;
+    List<ResponListDto> data;
 }

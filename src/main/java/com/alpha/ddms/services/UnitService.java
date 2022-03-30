@@ -1,10 +1,10 @@
 package com.alpha.ddms.services;
 
-import com.alpha.ddms.domains.DealerModel;
-import com.alpha.ddms.domains.UnitModel;
-import com.alpha.ddms.dto.UnitDto;
+import com.alpha.ddms.domains.*;
+import com.alpha.ddms.dto.*;
 import com.alpha.ddms.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -40,40 +40,32 @@ public class UnitService {
         unitModelList = unitRepository.findByIdUnit(id);
         return unitModelList;
     }
-    public List<UnitModel>findByUnit(
+    public List<UnitDto>findByUnit(
             String unitstatus,
             String unitseriesname,
             String dealerId,
             int limit,
             int offset
     ){
-        List<UnitModel>unitModelList = new ArrayList<>();
-        unitModelList = unitRepository.findByData(dealerId,unitstatus,unitseriesname,limit,offset);
-        return unitModelList;
-    }
-    public List<UnitDto>viewData(
-            String unitcode,
-            String unitseriesname,
-            String dealerid,
-            int unitquantity,
-            String unitcolor,
-            String unitstatus,
-            int averagecost
-    ){
-        List<UnitDto>unitDtoList=new ArrayList<>();
-        List<UnitModel> unitModels = unitRepository.findByIdUnit(unitcode);
-
-        for (int i = 0; i < unitModels.size(); i++) {
-            UnitDto data = new UnitDto();
-            data.setUnit_id(unitcode);
-            data.setUnit_series_name(unitseriesname);
-            data.setDealerId(dealerid);
-            data.setUnit_quantity(unitquantity);
-            data.setUnit_color(unitcolor);
-            data.setUnit_status(unitstatus);
-            data.setAverage_cost(averagecost);
-            unitDtoList.add(data);
+        Page<UnitModel> listAll = unitRepository.findByData((PageRequest.of(offset,limit)),dealerId,unitstatus,unitseriesname);
+        List<UnitDto>unitDtoList = new ArrayList<>();
+        List<UnitModel>unitList = listAll.toList();
+        for (UnitModel unit : unitList){
+            UnitDto unitDto = new UnitDto();
+            unitDto.setUnitCode(unit.getUnit_id());
+            unitDto.setUnitSeriesName(unit.getUnit_series_name());
+            unitDto.setDealerCode(unit.getDealerModel().getDealer_code());
+            unitDto.setUnitQuantity(unit.getUnit_quantity());
+            unitDto.setUnitColor(unit.getUnit_color());
+            unitDto.setUnitStatus(unit.getUnit_status());
+            unitDto.setAverageCost(unit.getAverage_cost());
+            unitDtoList.add(unitDto);
         }
         return unitDtoList;
     }
+//    public List<ResponDto> unitListAll(){
+//        List<ResponDto> responDtos = new ArrayList<>();
+//        List<UnitDto>unitDtoList = findByUnit()
+//        responDtos
+//    }
 }

@@ -1,6 +1,8 @@
 package com.alpha.ddms.controllers;
 
 import com.alpha.ddms.domains.UnitModel;
+import com.alpha.ddms.dto.ResponDto;
+import com.alpha.ddms.dto.ResponListDto;
 import com.alpha.ddms.dto.UnitDto;
 import com.alpha.ddms.services.DealerService;
 import com.alpha.ddms.services.UnitService;
@@ -40,7 +42,7 @@ public class UnitController {
         return new ResponseEntity<>(unit,HttpStatus.OK);
     }
     @PostMapping("listAll")
-    public List<UnitModel> listAll(
+    public ResponseEntity<Object> listAll(
             @RequestBody Map<String, Object> req
     ){
         String unitstatus = req.get("unitStatus").toString();
@@ -48,8 +50,23 @@ public class UnitController {
         String dealerid = req.get("dealerId").toString();
         int offset = Integer.parseInt(req.get("offset").toString());
         int limit = Integer.parseInt(req.get("limit").toString());
-        List<UnitModel> unitModelList = unitService.findByUnit(dealerid,unitstatus,unitseriesname,limit,offset);
-        return unitModelList;
+        List<UnitDto> unitDtoList = unitService.findByUnit(unitstatus,unitseriesname,dealerid,limit,offset);
+        List<ResponListDto>respon= new ArrayList<>();
+        List<ResponDto> unitDtos = new ArrayList<>();
+
+        ResponListDto responList = new ResponListDto();
+        responList.setListUnit(unitDtoList);
+        responList.setDataOfRecord(unitDtoList.size());
+        respon.add(responList);
+
+        ResponDto responDto = new ResponDto();
+        responDto.setStatus("S");
+        responDto.setCode(201);
+        responDto.setMessage("Prosess Successed");
+        responDto.setData(respon);
+        unitDtos.add(responDto);
+
+        return new ResponseEntity<>(unitDtos,HttpStatus.OK);
     }
     @GetMapping("get/{unitCode}")
     public List<UnitModel> getId(
