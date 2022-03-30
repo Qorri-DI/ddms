@@ -21,7 +21,7 @@ public class CustomerController{
         if(dto.getCustomerId().length() < 21){
             return new ResponseEntity<>("id salah",HttpStatus.BAD_REQUEST);
         }
-        if (!customerService.getCustomer(dto.getCustomerId()).isPresent()){
+        if (!customerService.findById(dto.getCustomerId()).isPresent()){
             customerService.saveCustomer(dto);
             return new ResponseEntity<>(new ResponseDto<>("S",201,"created",dto), HttpStatus.CREATED);
         }else {
@@ -44,10 +44,10 @@ public class CustomerController{
 
     @GetMapping("get/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable String id){
-        if (!customerService.getCustomer(id).isPresent()){
+        if (!customerService.findById(id).isPresent()){
             return new ResponseEntity<>("tidak ada customer dengan id " + id,HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(customerService.getCustomer(id),HttpStatus.OK);
+        return new ResponseEntity<>(customerService.findById(id),HttpStatus.OK);
     }
 
 

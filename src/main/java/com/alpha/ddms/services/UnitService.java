@@ -5,9 +5,13 @@ import com.alpha.ddms.domains.UnitModel;
 import com.alpha.ddms.repositories.DealerRepository;
 import com.alpha.ddms.repositories.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,7 +39,7 @@ public class UnitService {
         unit.setAverage_cost(averagecost);
         return unitRepository.save(unit);
     }
-    public List<UnitModel>findByIdUnit(String id){
+    public List<UnitModel> findByIdUnit(String id){
         List<UnitModel> unitModelList = new ArrayList<>();
         unitModelList = unitRepository.findByIdUnit(id);
         return unitModelList;
