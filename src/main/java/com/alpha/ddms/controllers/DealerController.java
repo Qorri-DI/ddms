@@ -95,8 +95,8 @@ public class DealerController {
             @RequestBody final Map<String ,Object> request
     ){
         String  dealer_code = request.get("dealerId").toString();
-        String  dealer_name = request.get("dealerName").toString();
-        String  dealer_status = request.get("dealerStatus").toString();
+        String  dealer_name = request.get("dealerName").toString().toLowerCase(Locale.ROOT);
+        String  dealer_status = request.get("dealerStatus").toString().toLowerCase(Locale.ROOT);
         int offset = Integer.parseInt(request.get("offset").toString());
         int limit = Integer.parseInt(request.get("limit").toString());
 
@@ -132,10 +132,5 @@ public class DealerController {
             dealerDtoById.setData(dealerDTOList);
             return new ResponseEntity<>(dealerDtoById,HttpStatus.OK);
         }
-
-
     }
-
-
-
 }
