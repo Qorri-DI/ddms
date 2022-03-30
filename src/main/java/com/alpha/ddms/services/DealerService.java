@@ -13,6 +13,10 @@ import java.util.Optional;
 public class DealerService {
     @Autowired
     DealerRepository dealerRepository;
+    public DealerModel getDealer(String idDealer){
+        Optional<DealerModel> data = dealerRepository.findById(idDealer);
+        return data.isPresent() ? null : data.get();
+    }
 
     public Optional<DealerModel> findById(String dealerId){
         Optional<DealerModel> dealerModel = dealerRepository.findById(dealerId);
