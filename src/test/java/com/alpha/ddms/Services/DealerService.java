@@ -1,4 +1,4 @@
-package com.alpha.ddms.services;
+package com.alpha.ddms.Services;
 
 import com.alpha.ddms.repositories.DealerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

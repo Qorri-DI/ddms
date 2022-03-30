@@ -1,5 +1,7 @@
 package com.alpha.ddms.dto;
 
+import org.springframework.lang.Nullable;
+
 public class CustomerRequestDto {
     private final String customerId;
     private final String customerName;
@@ -9,8 +11,23 @@ public class CustomerRequestDto {
     private final String customerKk;
     private final String customerEmail;
     private final String customerAddress;
+    private final String customerTelp;
+    private final String customerHp;
+    private final String salesId;
+    private final String customerStatus;
 
-    public CustomerRequestDto(String customerId, String customerName, String dealerId, String customerGender, String customerNik, String customerKk, String customerEmail, String customerAddress) {
+    public CustomerRequestDto(String customerId,
+                              @Nullable String customerName,
+                              @Nullable String dealerId,
+                              @Nullable String customerGender,
+                              @Nullable String customerNik,
+                              @Nullable String customerKk,
+                              @Nullable String customerEmail,
+                              @Nullable String customerAddress,
+                              @Nullable String customerTelp,
+                              @Nullable String customerHp,
+                              @Nullable String salesId,
+                              @Nullable String customerStatus) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.dealerId = dealerId;
@@ -19,6 +36,10 @@ public class CustomerRequestDto {
         this.customerKk = customerKk;
         this.customerEmail = customerEmail;
         this.customerAddress = customerAddress;
+        this.customerTelp = customerTelp;
+        this.customerHp = customerHp;
+        this.salesId = salesId;
+        this.customerStatus = customerStatus;
     }
 
     public String getCustomerId() {
@@ -51,5 +72,21 @@ public class CustomerRequestDto {
 
     public String getCustomerAddress() {
         return customerAddress;
+    }
+
+    public String getCustomerTelp() {
+        return customerTelp;
+    }
+
+    public String getCustomerHp() {
+        return customerHp;
+    }
+
+    public String getSalesId() {
+        return salesId;
+    }
+
+    public String getCustomerStatus() {
+        return customerStatus;
     }
 }

@@ -16,7 +16,7 @@ public class SalesModel {
     @Column(name = "sales_name", nullable = false, length = 255)
     private String sales_name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "dealer_code")
     private DealerModel dealerModel;
 

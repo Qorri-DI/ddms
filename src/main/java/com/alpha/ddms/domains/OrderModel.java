@@ -18,17 +18,17 @@ public class OrderModel {
     @JoinColumn(name = "unit_id")
     private List<UnitModel> unitModel;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dealer_code")
-    private List<DealerModel> dealerModel;
+    private DealerModel dealerModel;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sales_id")
-    private List<SalesModel> salesModel;
+    private SalesModel salesModel;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
-    private List<CustomerModel> listCustomerModel;
+    private CustomerModel CustomerModel;
 
     @Column(name = "minimum_payment", nullable = false)
     private float minimum_payment;
