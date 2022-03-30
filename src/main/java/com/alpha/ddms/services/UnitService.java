@@ -47,7 +47,9 @@ public class UnitService {
             int limit,
             int offset
     ){
+
         Page<UnitModel> listAll = unitRepository.findByData((PageRequest.of(offset,limit)),dealerId,unitstatus,unitseriesname);
+//        List<UnitModel> listAll = unitRepository.findByData2(dealerRepository.findById(dealerId).get().getDealer_code(),unitstatus,unitseriesname);
         List<UnitDto>unitDtoList = new ArrayList<>();
         List<UnitModel>unitList = listAll.toList();
         for (UnitModel unit : unitList){

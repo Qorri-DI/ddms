@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("ddms/v1/cmd/master/unit")
+@RequestMapping("ddms/v1")
 public class UnitController {
     @Autowired
     UnitService unitService;
     @Autowired
     DealerService dealerService;
 
-    @PostMapping("save")
+    @PostMapping("/cmd/master/unit/save")
     public ResponseEntity<Object> UnitSave(
             @RequestBody Map<String, Object> req
     ){
@@ -41,7 +41,7 @@ public class UnitController {
 
         return new ResponseEntity<>(unit,HttpStatus.OK);
     }
-    @PostMapping("listAll")
+    @PostMapping("qry/master/unit/listAll")
     public ResponseEntity<Object> listAll(
             @RequestBody Map<String, Object> req
     ){
@@ -52,7 +52,7 @@ public class UnitController {
         int limit = Integer.parseInt(req.get("limit").toString());
         List<UnitDto> unitDtoList = unitService.findByUnit(unitstatus,unitseriesname,dealerid,limit,offset);
         List<ResponListDto>respon= new ArrayList<>();
-        List<ResponDto> unitDtos = new ArrayList<>();
+        List<ResponDto> units = new ArrayList<>();
 
         ResponListDto responList = new ResponListDto();
         responList.setListUnit(unitDtoList);
@@ -64,11 +64,11 @@ public class UnitController {
         responDto.setCode(201);
         responDto.setMessage("Prosess Successed");
         responDto.setData(respon);
-        unitDtos.add(responDto);
+        units.add(responDto);
 
-        return new ResponseEntity<>(unitDtos,HttpStatus.OK);
+        return new ResponseEntity<>(units,HttpStatus.OK);
     }
-    @GetMapping("get/{unitCode}")
+    @GetMapping("qry/master/unit/get/{unitCode}")
     public List<UnitModel> getId(
             @PathVariable("unitCode") String unitcode
     ){
