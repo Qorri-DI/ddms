@@ -18,9 +18,9 @@ public class PpnModel {
     @Column(name = "description", nullable = false, length = 255)
     private String description;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dealer_code")
-    private List<DealerModel> dealerModel;
+    private DealerModel dealerModel;
 
     @Column(name = "effective_start_date", nullable = false)
     private Date effective_start_date;

@@ -1,14 +1,18 @@
 package com.alpha.ddms.domains;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "mst_sales")
 @Getter @Setter
-public class SalesModel {
+public class SalesModel implements Serializable {
     @Id
     @Column(name ="sales_id", nullable = false, length = 50)
     private String sales_id;
@@ -20,8 +24,9 @@ public class SalesModel {
     @JoinColumn(name = "dealer_code")
     private DealerModel dealerModel;
 
-    @ManyToOne
-    @JoinColumn(name = "sales_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "supervisor_id", referencedColumnName = "sales_id")
+    @JsonProperty(value = "supervisor_id")
     private SalesModel salesModel;
 
     @Column(name = "sales_gender", nullable = false, length = 4)
@@ -32,4 +37,12 @@ public class SalesModel {
 
     @Column(name = "sales_status", nullable = false, length = 10)
     private String sales_status;
+
+    public String getSalesModel() {
+        return salesModel.getSales_id();
+    }
+
+    public String getDealerModel() {
+        return dealerModel.getDealer_code();
+    }
 }
