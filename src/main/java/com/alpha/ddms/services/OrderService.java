@@ -3,7 +3,6 @@ package com.alpha.ddms.services;
 import com.alpha.ddms.domains.OrderModel;
 import com.alpha.ddms.repositories.DealerRepository;
 import com.alpha.ddms.repositories.OrderRepository;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +19,7 @@ public class OrderService {
     @Autowired
     DealerRepository dealerRepository;
 
-    public List<OrderModel> getAllOeder(String dealerId,String platNomor,
+    public List<OrderModel> getAllOrder(String dealerId,String platNomor,
                                         String nomor_mesin,
                                         String nomor_rangka,
                                         String paymentStatus,

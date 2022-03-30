@@ -39,8 +39,8 @@ public class CustomerController{
         Integer offset =  Integer.parseInt(request.get("offset"));
         Integer limit = Integer.parseInt(request.get("limit"));
         HashMap<String,Object> map = new HashMap<>();
-        map.put("listCustomer",customerService.getAllCustomer(dealerId,customerName,offset,limit));
-        map.put("dataOfRecord",customerService.getAllCustomer(dealerId,customerName,offset,limit).size());
+        map.put("listCustomer",customerService.getAllCustomer(dealerId,customerName,offset,limit).toList());
+        map.put("dataOfRecord",customerService.getAllCustomer(dealerId,customerName,offset,limit).getTotalElements());
         return new ResponseEntity<>(new ResponseDto<>("S",200,"proses successed",map),HttpStatus.OK);
     }
 

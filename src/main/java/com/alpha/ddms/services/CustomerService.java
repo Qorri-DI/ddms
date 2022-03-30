@@ -28,10 +28,11 @@ public class CustomerService {
     @Autowired
     private SalesRepository salesRepository;
 
-    public List<CustomerModel> getAllCustomer(String dealerID,String customerName,Integer page,Integer limit){
-        Page<CustomerModel> cm = customerRepository.getAllCustomer(dealerRepository.findById(dealerID).get(),customerName,PageRequest.of(page,limit));
-        List<CustomerModel> customer = cm.toList();
-        return customer;
+    public Page<CustomerModel> getAllCustomer(String dealerID,String customerName,Integer page,Integer limit){
+        Page<CustomerModel> cm = customerRepository.getAllCustomer(dealerRepository.findById(dealerID).get(),
+                customerName,
+                PageRequest.of(page,limit));
+        return cm;
     }
 
     public Optional<CustomerModel> getCustomer(String id){
