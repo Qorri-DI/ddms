@@ -1,5 +1,6 @@
 package com.alpha.ddms.domains;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ public class SalesModel {
     @JoinColumn(name = "dealer_code")
     private DealerModel dealerModel;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "sales_id", insertable = false, updatable = false)
     private SalesModel salesModel;

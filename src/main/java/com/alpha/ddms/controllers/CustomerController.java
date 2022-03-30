@@ -2,6 +2,7 @@ package com.alpha.ddms.controllers;
 
 import com.alpha.ddms.domains.CustomerModel;
 import com.alpha.ddms.dto.CustomerRequestDto;
+import com.alpha.ddms.dto.ResponseDto;
 import com.alpha.ddms.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,18 +25,23 @@ public class CustomerController{
         }
         if (!customerService.getCustomer(dto.getCustomerId()).isPresent()){
             customerService.saveCustomer(dto);
-            return new ResponseEntity<>("dibuat", HttpStatus.CREATED);
+            return new ResponseEntity<>(new ResponseDto<>("S",201,"created",dto), HttpStatus.CREATED);
         }else {
             customerService.updateCustomer(dto);
-            return new ResponseEntity<>("updated",HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseDto<>("S",201,"updated",dto),HttpStatus.OK);
         }
     }
 
     @GetMapping("/listAll")
-    public List<CustomerModel> getAllCustomer(@RequestBody HashMap<String,Integer> request){
-        Integer offset =  request.get("offset");
-        Integer limit = request.get("limit");
-        return customerService.getAllCustomer(offset,limit);
+    public ResponseEntity<?> getAllCustomer(@RequestBody HashMap<String,String > request){
+        String customerName = request.get("customerName");
+        String dealerId = request.get("dealerId");
+        Integer offset =  Integer.parseInt(request.get("offset"));
+        Integer limit = Integer.parseInt(request.get("limit"));
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("listCustomer",customerService.getAllCustomer(dealerId,customerName,offset,limit));
+        map.put("dataOfRecord",customerService.getAllCustomer(dealerId,customerName,offset,limit).size());
+        return new ResponseEntity<>(new ResponseDto<>("S",200,"proses successed",map),HttpStatus.OK);
     }
 
     @GetMapping("get/{id}")
