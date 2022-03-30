@@ -2,6 +2,7 @@ package com.alpha.ddms.controllers;
 
 import com.alpha.ddms.domains.UnitModel;
 import com.alpha.ddms.dto.UnitDto;
+import com.alpha.ddms.services.DealerService;
 import com.alpha.ddms.services.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -14,6 +15,8 @@ import java.util.*;
 public class UnitController {
     @Autowired
     UnitService unitService;
+    @Autowired
+    DealerService dealerService;
 
     @PostMapping("save")
     public ResponseEntity<Object> UnitSave(
@@ -28,27 +31,31 @@ public class UnitController {
         int averagecost = Integer.parseInt(req.get("averageCost").toString());
 
         List<UnitModel>unit = new ArrayList<>();
+
+        if (dealerService.getDealer(dealerid) == null){
+            return new ResponseEntity<>("Kosong",HttpStatus.BAD_REQUEST);
+        }
         unit.add(unitService.saveData(unitcode,unitseriesname,dealerid,unitquantity,unitcolor,unitstatus,averagecost));
 
         return new ResponseEntity<>(unit,HttpStatus.OK);
     }
     @PostMapping("listAll")
-    public String listAll(
+    public List<UnitModel> listAll(
             @RequestBody Map<String, Object> req
     ){
         String unitstatus = req.get("unitStatus").toString();
         String unitseriesname = req.get("unitSeriesName").toString();
         String dealerid = req.get("dealerId").toString();
-        int unitquantity = Integer.parseInt(req.get("unitQuantity").toString());
         int offset = Integer.parseInt(req.get("offset").toString());
         int limit = Integer.parseInt(req.get("limit").toString());
-        return "UnitSave";
+        List<UnitModel> unitModelList = unitService.findByUnit(unitstatus,unitseriesname,dealerid);
+        return unitModelList;
     }
-    @PostMapping("get/{unitCode}")
-    public String getId(
-            @PathVariable("unitCode")String unitcode
+    @GetMapping("get/{unitCode}")
+    public List<UnitModel> getId(
+            @PathVariable("unitCode") String unitcode
     ){
-        List<UnitModel> unit = unitService.f
-        return unitcode;
+        List<UnitModel> unit = unitService.findByIdUnit(unitcode);
+        return unit;
     }
 }

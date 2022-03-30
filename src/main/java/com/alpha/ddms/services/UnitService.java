@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -38,7 +37,16 @@ public class UnitService {
     }
     public List<UnitModel>findByIdUnit(String id){
         List<UnitModel> unitModelList = new ArrayList<>();
-        unitModelList.add(unitRepository.getById(id));
+        unitModelList = unitRepository.findByIdUnit(id);
+        return unitModelList;
+    }
+    public List<UnitModel>findByUnit(
+            String unitstatus,
+            String unitseriesname,
+            String dealerId
+    ){
+        List<UnitModel>unitModelList = new ArrayList<>();
+        unitModelList = unitRepository.findByData(unitstatus,unitseriesname,dealerId);
         return unitModelList;
     }
     public List<UnitDto>viewData(

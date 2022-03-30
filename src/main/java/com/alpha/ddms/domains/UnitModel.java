@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "mst_unit")
 @Getter @Setter
-public class UnitModel {
+public class UnitModel{
     @Id
     @Column(name = "unit_id", nullable = false, length = 50)
     private String unit_id;
