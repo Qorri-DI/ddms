@@ -11,6 +11,7 @@ public interface UnitRepository extends JpaRepository<UnitModel, String> {
     UnitModel save(UnitModel data);
     @Query(value = "select * from mst_unit where unit_id=?1", nativeQuery = true)
     List<UnitModel>findByIdUnit(String unitId);
-    @Query(value = "select * from mst_unit where unit_status=?1 or  unit_series_name=?2 or dealer_code=?3 order by unit_id", nativeQuery = true)
-    List<UnitModel>findByData(String unitStatus, String unitSeriesName, String dealerId);
+    @Query(value = "select * from mst_unit where dealer_code=?1 and lower(unit_status)=?2 and  lower(unit_series_name) like ?3%", nativeQuery = true)
+    List<UnitModel>findByData(String dealerCode, String unitStatus, String unitSeriesName, int limit, int offset);
+
 }

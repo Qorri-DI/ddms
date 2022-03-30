@@ -48,7 +48,7 @@ public class UnitController {
         String dealerid = req.get("dealerId").toString();
         int offset = Integer.parseInt(req.get("offset").toString());
         int limit = Integer.parseInt(req.get("limit").toString());
-        List<UnitModel> unitModelList = unitService.findByUnit(unitstatus,unitseriesname,dealerid);
+        List<UnitModel> unitModelList = unitService.findByUnit(dealerid,unitstatus,unitseriesname,limit,offset);
         return unitModelList;
     }
     @GetMapping("get/{unitCode}")

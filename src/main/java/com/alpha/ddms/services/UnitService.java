@@ -43,10 +43,12 @@ public class UnitService {
     public List<UnitModel>findByUnit(
             String unitstatus,
             String unitseriesname,
-            String dealerId
+            String dealerId,
+            int limit,
+            int offset
     ){
         List<UnitModel>unitModelList = new ArrayList<>();
-        unitModelList = unitRepository.findByData(unitstatus,unitseriesname,dealerId);
+        unitModelList = unitRepository.findByData(dealerId,unitstatus,unitseriesname,limit,offset);
         return unitModelList;
     }
     public List<UnitDto>viewData(
