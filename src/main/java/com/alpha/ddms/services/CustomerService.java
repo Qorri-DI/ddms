@@ -8,7 +8,11 @@ import com.alpha.ddms.repositories.SalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.tags.Param;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -24,13 +28,14 @@ public class CustomerService {
     @Autowired
     private SalesRepository salesRepository;
 
-    public List<CustomerModel> getAllCustomer(Integer page,Integer limit){
-        Page<CustomerModel> cm = customerRepository.getAllCustomer(PageRequest.of(page,limit));
-        List<CustomerModel> customer = cm.toList();
-        return customer;
+    public Page<CustomerModel> getAllCustomer(String dealerID,String customerName,Integer page,Integer limit){
+        Page<CustomerModel> cm = customerRepository.getAllCustomer(dealerRepository.findById(dealerID).get(),
+                customerName,
+                PageRequest.of(page,limit));
+        return cm;
     }
 
-    public Optional<CustomerModel> findById(String id){
+    public Optional<CustomerModel> getCustomer(String id){
         return customerRepository.findById(id);
     }
 
