@@ -46,9 +46,9 @@ public class UnitController {
     }
     @PostMapping("get/{unitCode}")
     public String getId(
-            @PathVariable String unitCode
+            @PathVariable("unitCode")String unitcode
     ){
-
-        return "UnitSave";
+        List<UnitModel> unit = unitService.f
+        return unitcode;
     }
 }
