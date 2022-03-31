@@ -35,6 +35,4 @@ public interface DealerRepository extends JpaRepository<DealerModel, String> {
     @Query(value = "select * from mst_dealer where dealer_code like %:dealer_code% and lower(dealer_status)=:dealer_status and lower(dealer_name) like %:dealer_name%",nativeQuery = true)
     Page<DealerModel> getAllPage (Pageable pageable,String dealer_code,String dealer_status, String dealer_name);
 
-
-
 }

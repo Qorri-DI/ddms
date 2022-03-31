@@ -1,6 +1,5 @@
 package com.alpha.ddms;
 
-import com.alpha.ddms.common.Utils;
 import com.alpha.ddms.configuration.ConfigProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +13,6 @@ public class DdmsApplication {
 		SpringApplication.run(DdmsApplication.class, args);
 
 		System.out.println(ConfigProperties.getConstant_max_limit());
-
 	}
 
 }
