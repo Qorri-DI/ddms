@@ -15,8 +15,8 @@ public class PpnModel {
     @Column(name = "ppn_id", nullable = false, length = 50)
     private String ppn_id;
 
-    @Column(name = "descustomerRepositoryiption", nullable = false, length = 255)
-    private String descustomerRepositoryiption;
+    @Column(name = "description", nullable = false, length = 255)
+    private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dealer_code")

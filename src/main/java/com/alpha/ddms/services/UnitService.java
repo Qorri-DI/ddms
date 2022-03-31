@@ -40,11 +40,13 @@ public class UnitService {
         unit.setAverage_cost(averagecost);
         return unitRepository.save(unit);
     }
+
     public List<UnitModel> findByIdUnit(String id){
         List<UnitModel> unitModelList = new ArrayList<>();
         unitModelList = unitRepository.findByIdUnit(id);
         return unitModelList;
     }
+
     public List<UnitDto>findByUnit(
             String unitstatus,
             String unitseriesname,
@@ -52,7 +54,6 @@ public class UnitService {
             int limit,
             int offset
     ){
-
         Page<UnitModel> listAll = unitRepository.findByData((PageRequest.of(offset,limit)),dealerId,unitstatus,unitseriesname);
 //        List<UnitModel> listAll = unitRepository.findByData2(dealerRepository.findById(dealerId).get().getDealer_code(),unitstatus,unitseriesname);
         List<UnitDto>unitDtoList = new ArrayList<>();
@@ -75,9 +76,6 @@ public class UnitService {
 //        List<UnitDto>unitDtoList = findByUnit()
 //        responDtos
 //    }
-    @Autowired
-    UnitRepository unitRepository;
-
     public Optional<UnitModel> findById(String unitCode){
         return unitRepository.findById(unitCode);
     }

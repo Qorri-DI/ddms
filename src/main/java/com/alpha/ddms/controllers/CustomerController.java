@@ -39,6 +39,7 @@ public class CustomerController{
         HashMap<String,Object> map = new HashMap<>();
         map.put("listCustomer",customerService.getAllCustomer(dealerId,customerName,offset,limit).toList());
         map.put("dataOfRecord",customerService.getAllCustomer(dealerId,customerName,offset,limit).getTotalElements());
+        System.out.println(map);
         return new ResponseEntity<>(new ResponseDto<>("S",200,"proses successed",map),HttpStatus.OK);
     }
 

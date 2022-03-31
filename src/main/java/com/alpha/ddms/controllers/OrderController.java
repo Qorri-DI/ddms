@@ -2,14 +2,9 @@ package com.alpha.ddms.controllers;
 
 import com.alpha.ddms.common.Utils;
 import com.alpha.ddms.domains.*;
-import com.alpha.ddms.services.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import com.alpha.ddms.domains.OrderModel;
 import com.alpha.ddms.dto.AllOrderRequestDto;
 import com.alpha.ddms.dto.ResponseDto;
-import com.alpha.ddms.services.OrderService;
+import com.alpha.ddms.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/ddms/v1/cmd/transaction/order")
-@RequestMapping("ddms/v1/qry/transaction/order/")
 public class OrderController {
 
     @Autowired OrderService orderService;
@@ -133,6 +121,8 @@ public class OrderController {
             errMsg.add("Request body not found");
             return new ResponseEntity<>(errMsg, HttpStatus.BAD_REQUEST);
         }
+    }
+
     @PostMapping("/listAll")
     public ResponseEntity<?> getAllOrder(@RequestBody AllOrderRequestDto dto){
         List<OrderModel> orderModels = orderService.getAllOrder(dto.getDealerId(),
