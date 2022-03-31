@@ -72,6 +72,7 @@ public class UnitController {
             return new ResponseEntity<>(resDto, HttpStatus.CREATED);
         }else{
             Optional<UnitModel> unitData = unitService.findByIdunit(unitcode);
+            unitData.get().setUnit_id(unitcode);
             unitData.get().setUnit_series_name(unitseriesname);
             Optional<DealerModel> dealer = dealerService.findById(dealerid);
             unitData.get().setDealerModel(dealer.get());
@@ -81,6 +82,12 @@ public class UnitController {
             unitData.get().setAverage_cost(averagecost);
 
             UnitModel unitSave = unitService.saveData(unitData.get());
+
+            UnitSaveDto resDto = new UnitSaveDto();
+            resDto.setCode(201);
+            resDto.setData(unitSave);
+            resDto.setMessage("Process Succesed");
+            resDto.setStatus("S");
             return new ResponseEntity<>(unitSave,HttpStatus.OK);
         }
     }
