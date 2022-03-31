@@ -2,6 +2,7 @@ package com.alpha.ddms.services;
 
 import com.alpha.ddms.domains.*;
 import com.alpha.ddms.dto.*;
+import com.alpha.ddms.models.*;
 import com.alpha.ddms.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -15,6 +16,7 @@ import java.util.*;
 public class UnitService {
     @Autowired UnitRepository unitRepository;
     @Autowired DealerRepository dealerRepository;
+    @Autowired ViewUnitRepository viewUnitRepository;
     public UnitModel saveData(UnitModel unit){
         return unitRepository.save(unit);
     }
@@ -42,10 +44,10 @@ public class UnitService {
             int offset
     ){
 
-        Page<UnitModel> listAll = unitRepository.findByData((PageRequest.of(offset,limit)),dealerId,unitstatus,unitseriesname);
+        Page<ViewUnit> listAll = viewUnitRepository.findByData((PageRequest.of(offset,limit)),dealerId,unitstatus,unitseriesname);
         List<UnitDto>unitDtoList = new ArrayList<>();
-        List<UnitModel>unitList = listAll.toList();
-        for (UnitModel unit : unitList){
+        List<ViewUnit>unitList = listAll.toList();
+        for (ViewUnit unit : unitList){
             UnitDto unitDto = new UnitDto();
             unitDto.setUnitCode(unit.getUnit_id());
             unitDto.setUnitSeriesName(unit.getUnit_series_name());
@@ -60,10 +62,10 @@ public class UnitService {
         return unitDtoList;
     }
     public UnitDto UnitId(String idUnit){
-        List<UnitModel>unitID = unitRepository.findByIdUnit(idUnit);
+        List<ViewUnit>unitID = viewUnitRepository.findByIdUnit(idUnit);
         UnitDto unitDto = new UnitDto();
 
-        for (UnitModel unit : unitID){
+        for (ViewUnit unit : unitID){
             unitDto.setUnitCode(unit.getUnit_id());
             unitDto.setUnitSeriesName(unit.getUnit_series_name());
             unitDto.setDealerCode(unit.getDealerModel().getDealer_code());
