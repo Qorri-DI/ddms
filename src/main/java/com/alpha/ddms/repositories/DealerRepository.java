@@ -30,11 +30,12 @@ public interface DealerRepository extends JpaRepository<DealerModel, String> {
     DealerModel save(DealerModel data);
 
     @Query(value = "select * from mst_dealer where dealer_code like :dealerId",nativeQuery = true)
-    List<DealerModel> findByDealerId(String dealerId);
+    DealerModel findByDealerId(String dealerId);
 
-    @Query(value = "select * from mst_dealer where dealer_code like %:dealer_code% and lower(dealer_status)=:dealer_status and lower(dealer_name) like %:dealer_name%",nativeQuery = true)
+    @Query(value = "select * from mst_dealer where dealer_code like %:dealer_code% and lower(dealer_status)=:dealer_status and lower(dealer_name) like %:dealer_name% order by dealer_code ASC",nativeQuery = true)
     Page<DealerModel> getAllPage (Pageable pageable,String dealer_code,String dealer_status, String dealer_name);
 
-
+    @Query(value = "select * from mst_dealer where dealer_code=:dealerId",nativeQuery = true)
+    Optional<DealerModel> findByGetId(String dealerId);
 
 }

@@ -25,6 +25,9 @@ public class DealerService {
     public Optional<DealerModel> findByName(String dealer_name) {
         return dealerRepository.findByName(dealer_name);
     }
+    public Optional<DealerModel> findByGetId(String dealerId) {
+        return dealerRepository.findByCode(dealerId);
+    }
 
     public int saveDealer (String dealer_code, String dealer_name, String dealer_class, String telp_number, String alamat, String dealer_status, String dealer_ext_code){
         return dealerRepository.saveDealer(dealer_code,dealer_name,dealer_class,telp_number,alamat,dealer_status,dealer_ext_code);
@@ -56,20 +59,17 @@ public class DealerService {
         return dealerDTOList;
     }
     public DealerDTO dealerById (String dealerId){
-        List<DealerModel> ById =dealerRepository.findByDealerId(dealerId);
+        DealerModel ById =dealerRepository.findByDealerId(dealerId);
         DealerDTO dealerDTO = new DealerDTO();
 
-        for(DealerModel dealerModel: ById) {
-            dealerDTO.setDealerId(dealerId);
-            dealerDTO.setDealerName(dealerModel.getDealer_name());
-            dealerDTO.setDealerClass(dealerModel.getDealer_class());
-            dealerDTO.setTelpNumber(dealerModel.getTelp_number());
-            dealerDTO.setAlamat(dealerModel.getAlamat());
-            dealerDTO.setDealerExCode(dealerModel.getDealer_ext_code());
-            dealerDTO.setDealerStatus(dealerModel.getDealer_status());
+        dealerDTO.setDealerId(dealerId);
+        dealerDTO.setDealerName(ById.getDealer_name());
+        dealerDTO.setDealerClass(ById.getDealer_class());
+        dealerDTO.setTelpNumber(ById.getTelp_number());
+        dealerDTO.setAlamat(ById.getAlamat());
+        dealerDTO.setDealerExCode(ById.getDealer_ext_code());
+        dealerDTO.setDealerStatus(ById.getDealer_status());
 
-
-        }
         return dealerDTO;
     }
 
