@@ -27,15 +27,23 @@ public class ViewUnitController {
         String unitstatus = req.get("unitStatus").toString();
         String unitseriesname = req.get("unitSeriesName").toString();
         String dealerid = req.get("dealerId").toString();
-        int offset = Integer.parseInt(req.get("offset").toString());
-        int limit = Integer.parseInt(req.get("limit").toString());
+        String limits = req.get("limit").toString();
+//        int limet = Integer.parseInt(req.get("limit").toString());
+        String offsets = req.get("offset").toString();
+//        int offsat = Integer.parseInt(req.get("offset").toString());
         if (Checks.isNullOrEmpty(unitstatus) ||
                 Checks.isNullOrEmpty(unitseriesname) ||
                 Checks.isNullOrEmpty(dealerid)
         ){
             return new ResponseEntity<>("Error Bad Request",HttpStatus.BAD_REQUEST);
-        }else if (limit == 0){
+        }
+        int limit = 0;
+        if (limits.isEmpty() || limits.equals("")/* || limet == 0*/){
             limit = ConfigProperties.getConstant_max_limit();
+        }
+        int offset =0;
+        if (offsets.isEmpty() || offsets.equals("")/*|| offsat == 0*/){
+            offset = 0;
         }
         List<UnitDto> unitDtoList = unitService.findByUnit(unitstatus,unitseriesname,dealerid,limit,offset);
         if (unitDtoList.size() == 0){
