@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 
 
@@ -21,6 +22,17 @@ public class Utils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssnnnn");
         String date = LocalDateTime.now().format(formatter);
         return date;
+    }
+
+    public static Boolean checkId(String id){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssnnnn");
+        LocalDateTime.parse(id);
+        try{
+            LocalDateTime.parse(id,formatter);
+            return true;
+        }catch (DateTimeParseException e){
+            return false;
+        }
     }
 
     public static String generateLatestId(String id){

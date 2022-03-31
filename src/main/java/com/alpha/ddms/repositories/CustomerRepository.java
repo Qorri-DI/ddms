@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 public interface CustomerRepository extends JpaRepository<CustomerModel, String> {
 
     @Query("select c from CustomerModel c where c.dealerModel = :dealerId and lower(c.customer_name) " +
-            "like concat('%',:customerName,'%') order by c.customer_id")
+            "like lower(concat('%',:customerName,'%')) order by c.customer_id")
     Page<CustomerModel> getAllCustomer(@Param("dealerId") DealerModel dealerId
             ,@Param("customerName") String customerName
             , Pageable pageable);

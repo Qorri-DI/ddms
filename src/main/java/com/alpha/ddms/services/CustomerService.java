@@ -1,5 +1,6 @@
 package com.alpha.ddms.services;
 
+import com.alpha.ddms.configuration.ConfigProperties;
 import com.alpha.ddms.domains.CustomerModel;
 import com.alpha.ddms.dto.CustomerRequestDto;
 import com.alpha.ddms.repositories.CustomerRepository;
@@ -7,10 +8,13 @@ import com.alpha.ddms.repositories.DealerRepository;
 import com.alpha.ddms.repositories.SalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -24,10 +28,19 @@ public class CustomerService {
     private SalesRepository salesRepository;
 
     public Page<CustomerModel> getAllCustomer(String dealerId, String customerName, Integer page,Integer limit){
-        Page<CustomerModel> cm = customerRepository.getAllCustomer(dealerRepository.findById(dealerId).get(),
+        Page<CustomerModel> cm = new PageImpl<>(new ArrayList<>());
+        if(limit == 0 || limit == null){
+            limit = ConfigProperties.getConstant_max_limit();
+        }
+        if(page == null){
+            page = 0;
+        }
+        if(!dealerRepository.existsById(dealerId)){
+            return cm;
+        }
+         cm = customerRepository.getAllCustomer(dealerRepository.findById(dealerId).get(),
                 customerName,
                 PageRequest.of(page,limit));
-        System.out.println(cm);
         return cm;
     }
 
