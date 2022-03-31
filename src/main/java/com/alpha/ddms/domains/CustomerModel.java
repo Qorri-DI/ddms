@@ -52,7 +52,7 @@ public class CustomerModel {
         return dealerModel.getDealer_code();
     }
 
-    public String getSalesModel() {
-        return salesModel.getSales_id();
-    }
+//    public String getSalesModel() {
+//        return salesModel.getSales_id();
+//    }
 }

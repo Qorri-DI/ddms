@@ -14,9 +14,9 @@ public class OrderModel {
     @Column(name = "order_id", nullable = false, length = 50)
     private String order_id;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "unit_id")
-    private List<UnitModel> unitModel;
+    private UnitModel unitModel;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dealer_code")
