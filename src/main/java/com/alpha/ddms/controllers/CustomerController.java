@@ -1,5 +1,7 @@
 package com.alpha.ddms.controllers;
 
+import com.alpha.ddms.common.Utils;
+import com.alpha.ddms.domains.CustomerModel;
 import com.alpha.ddms.dto.CustomerRequestDto;
 import com.alpha.ddms.dto.ResponseDto;
 import com.alpha.ddms.services.CustomerService;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/ddms/v1/qry/master/customer")
@@ -16,12 +19,18 @@ public class CustomerController{
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping("/save")
+    @PostMapping("/save")
     public ResponseEntity<?> postCustomer(@RequestBody CustomerRequestDto dto){
-        if(dto.getCustomerId().length() < 21){
-            return new ResponseEntity<>("id salah",HttpStatus.BAD_REQUEST);
+
+        if (dto.getCustomerGender().toUpperCase().equals("GTLK") || dto.getCustomerGender().toUpperCase().equals("GTPR")){
+            return new ResponseEntity<>("format gender salah",HttpStatus.BAD_REQUEST);
         }
-        if (!customerService.findById(dto.getCustomerId()).isPresent()){
+        if (dto.getCustomerNik().length() < 16){
+            return new ResponseEntity<>("format NIK salah",HttpStatus.BAD_REQUEST);
+        }
+        if (!customerService.findById(dto.getCustomerId()).isPresent() || dto.getCustomerId().isEmpty() || dto.getCustomerId() == null){
+            String id = Utils.generateLocalDateId();
+            dto.setCustomerId(id);
             customerService.saveCustomer(dto);
             return new ResponseEntity<>(new ResponseDto<>("S",201,"created",dto), HttpStatus.CREATED);
         }else {
@@ -39,7 +48,6 @@ public class CustomerController{
         HashMap<String,Object> map = new HashMap<>();
         map.put("listCustomer",customerService.getAllCustomer(dealerId,customerName,offset,limit).toList());
         map.put("dataOfRecord",customerService.getAllCustomer(dealerId,customerName,offset,limit).getTotalElements());
-        System.out.println(map);
         return new ResponseEntity<>(new ResponseDto<>("S",200,"proses successed",map),HttpStatus.OK);
     }
 

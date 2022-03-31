@@ -1,33 +1,34 @@
 package com.alpha.ddms.dto;
 
+import lombok.NonNull;
 import org.springframework.lang.Nullable;
 
 public class CustomerRequestDto {
-    private final String customerId;
-    private final String customerName;
-    private final String dealerId;
-    private final String customerGender;
-    private final String customerNik;
-    private final String customerKk;
-    private final String customerEmail;
-    private final String customerAddress;
-    private final String customerTelp;
-    private final String customerHp;
-    private final String salesId;
-    private final String customerStatus;
+    private String customerId;
+    private String customerName;
+    private String dealerId;
+    private String customerGender;
+    private String customerNik;
+    private String customerKk;
+    private String customerEmail;
+    private String customerAddress;
+    private String customerTelp;
+    private String customerHp;
+    private String salesId;
+    private String customerStatus;
 
     public CustomerRequestDto(String customerId,
-                              @Nullable String customerName,
-                              @Nullable String dealerId,
-                              @Nullable String customerGender,
-                              @Nullable String customerNik,
-                              @Nullable String customerKk,
-                              @Nullable String customerEmail,
-                              @Nullable String customerAddress,
-                              @Nullable String customerTelp,
-                              @Nullable String customerHp,
-                              @Nullable String salesId,
-                              @Nullable String customerStatus) {
+                              @NonNull String customerName,
+                              @NonNull String dealerId,
+                              @NonNull String customerGender,
+                              @NonNull String customerNik,
+                              @NonNull String customerKk,
+                              @NonNull String customerEmail,
+                              @NonNull String customerAddress,
+                              @NonNull String customerTelp,
+                              @NonNull String customerHp,
+                              @NonNull String salesId,
+                              @NonNull String customerStatus) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.dealerId = dealerId;
@@ -88,5 +89,9 @@ public class CustomerRequestDto {
 
     public String getCustomerStatus() {
         return customerStatus;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }
