@@ -57,17 +57,18 @@ public class UnitController {
 
             UnitModel unitSave = unitService.saveData(unit);
 
-            unitDto.setUnitCode(IdNew);
-            unitDto.setUnitSeriesName(unitseriesname);
+            Optional<UnitModel>data= unitService.findByIdunit(IdNew);
+            unitDto.setUnitCode(data.get().getUnit_id());
+            unitDto.setUnitSeriesName(data.get().getUnit_series_name());
             unitDto.setDealerCode(dealer.get().getDealer_code());
-            unitDto.setUnitQuantity(unitquantity);
-            unitDto.setUnitColor(unitcolor);
-            unitDto.setUnitStatus(unitstatus);
-            unitDto.setAverageCost(averagecost);
+            unitDto.setUnitQuantity(data.get().getUnit_quantity());
+            unitDto.setUnitColor(data.get().getUnit_color());
+            unitDto.setUnitStatus(data.get().getUnit_status());
+            unitDto.setAverageCost(data.get().getAverage_cost());
 
             UnitSaveDto resDto = new UnitSaveDto();
             resDto.setCode(201);
-            resDto.setData(unit);
+            resDto.setData(unitDto);
             resDto.setMessage("Process Succesed");
             resDto.setStatus("S");
             return new ResponseEntity<>(resDto, HttpStatus.CREATED);
