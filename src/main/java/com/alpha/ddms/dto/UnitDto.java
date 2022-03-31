@@ -1,11 +1,10 @@
 package com.alpha.ddms.dto;
 
+import com.alpha.ddms.domains.DealerModel;
 import lombok.*;
 
-import java.io.Serializable;
-
 @Getter @Setter
-public class UnitDto implements Serializable {
+public class UnitDto{
     private String unitCode;
     private String unitSeriesName;
     private String dealerCode;

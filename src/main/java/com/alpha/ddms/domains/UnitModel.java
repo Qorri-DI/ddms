@@ -3,11 +3,12 @@ package com.alpha.ddms.domains;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "mst_unit")
 @Getter @Setter
-public class UnitModel{
+public class UnitModel implements Serializable{
     @Id
     @Column(name = "unit_id", nullable = false, length = 50)
     private String unit_id;

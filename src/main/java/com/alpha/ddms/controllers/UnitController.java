@@ -4,7 +4,9 @@ import com.alpha.ddms.common.Utils;
 import com.alpha.ddms.domains.DealerModel;
 import com.alpha.ddms.domains.UnitModel;
 import com.alpha.ddms.dto.ResponListDto;
+import com.alpha.ddms.dto.ResponseDto;
 import com.alpha.ddms.dto.UnitDto;
+import com.alpha.ddms.dto.UnitSaveDto;
 import com.alpha.ddms.services.DealerService;
 import com.alpha.ddms.services.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,44 +27,61 @@ public class UnitController {
     public ResponseEntity<?> UnitSave(
             @RequestBody Map<String, Object> req
     ){
-        if (!req.isEmpty()) {
-            String unitcode = req.get("unitCode").toString();
-            String unitseriesname = req.get("unitSeriesName").toString();
-            String dealerid = req.get("dealerId").toString();
-            int unitquantity = Integer.parseInt(req.get("unitQuantity").toString());
-            String unitcolor = req.get("unitColor").toString();
-            String unitstatus = req.get("unitStatus").toString();
-            float averagecost = Float.parseFloat(req.get("averageCost").toString());
-            Optional<UnitModel> cek = unitService.findByIdunit(unitcode);
-            if (unitcode.isEmpty()) {
-                UnitModel unitModel = new UnitModel();
-                String latestId = unitService.findByIdLast(Utils.getCurrentDateTimeString()) == null
-                        ? "0" : unitService.findByIdLast(Utils.getCurrentDateTimeString()).substring(13, 7);
-                String IdNew = Utils.generateLatestId(latestId);
-                unitModel.setUnit_id(IdNew);
-                unitModel.setUnit_series_name(unitseriesname);
-                DealerModel dealerModel = dealerService.getDealer(dealerid);
-                unitModel.setDealerModel(dealerModel);
-                unitModel.setUnit_quantity(unitquantity);
-                unitModel.setUnit_color(unitcolor);
-                unitModel.setUnit_status(unitstatus);
-                unitModel.setAverage_cost(averagecost);
-                UnitModel unit = unitService.saveData(unitModel);
-                return new ResponseEntity<>(unitModel, HttpStatus.OK);
-            } else {
-                UnitModel unitModel = unitService.findIdUnit(unitcode);
-                unitModel.setUnit_series_name(unitseriesname);
-                DealerModel dealerModel = dealerService.getDealer(dealerid);
-                unitModel.setDealerModel(dealerModel);
-                unitModel.setUnit_quantity(unitquantity);
-                unitModel.setUnit_color(unitcolor);
-                unitModel.setUnit_status(unitstatus);
-                unitModel.setAverage_cost(averagecost);
-                UnitModel unit = unitService.saveData(unitModel);
-                return new ResponseEntity<>(unit, HttpStatus.OK);
-            }
-        }else {
-            return new ResponseEntity<>("Error Bad Request ", HttpStatus.BAD_REQUEST);
+        String unitcode = req.get("unitCode").toString();
+        String unitseriesname = req.get("unitSeriesName").toString();
+        String dealerid = req.get("dealerId").toString();
+        int unitquantity = Integer.parseInt(req.get("unitQuantity").toString());
+        String unitcolor = req.get("unitColor").toString();
+        String unitstatus = req.get("unitStatus").toString();
+        float averagecost = Float.parseFloat(req.get("averageCost").toString());
+
+        Map<String,Object> response = new HashMap<>();
+        UnitDto unitDto = new UnitDto();
+        Optional<UnitModel> cek = unitService.findByIdunit(unitcode);
+
+        if (cek.isEmpty()) {
+            String latestId = unitService.findByIdLast(Utils.getCurrentDateTimeString()) == null
+                    ? "0" : unitService.findByIdLast(Utils.getCurrentDateTimeString()).substring(13, 7);
+            String IdNew = Utils.generateLatestId(latestId);
+            UnitModel unitModel = new UnitModel();
+            unitModel.setUnit_id(IdNew);
+            unitModel.setUnit_series_name(unitseriesname);
+            Optional<DealerModel> dealer = dealerService.findById(dealerid);
+            unitModel.setDealerModel(dealer.get());
+            unitModel.setUnit_quantity(unitquantity);
+            unitModel.setUnit_color(unitcolor);
+            unitModel.setUnit_status(unitstatus);
+            unitModel.setAverage_cost(averagecost);
+
+            UnitModel unitSave = unitService.saveData(unitModel);
+
+            UnitDto unit = new UnitDto();
+            unit.setUnitCode(unitcode);
+            unit.setUnitSeriesName(unitseriesname);
+            unit.setDealerCode(dealer.get().getDealer_code());
+            unit.setUnitQuantity(unitquantity);
+            unit.setUnitColor(unitcolor);
+            unit.setUnitStatus(unitstatus);
+            unit.setAverageCost(averagecost);
+
+            UnitSaveDto resDto = new UnitSaveDto();
+            resDto.setCode(201);
+            resDto.setData(unit);
+            resDto.setMessage("Process Succesed");
+            resDto.setStatus("S");
+            return new ResponseEntity<>(resDto, HttpStatus.CREATED);
+        }else{
+            Optional<UnitModel> unitData = unitService.findByIdunit(unitcode);
+            unitData.get().setUnit_series_name(unitseriesname);
+            Optional<DealerModel> dealer = dealerService.findById(dealerid);
+            unitData.get().setDealerModel(dealer.get());
+            unitData.get().setUnit_quantity(unitquantity);
+            unitData.get().setUnit_color(unitcolor);
+            unitData.get().setUnit_status(unitstatus);
+            unitData.get().setAverage_cost(averagecost);
+
+            UnitModel unitSave = unitService.saveData(unitData.get());
+            return new ResponseEntity<>(unitSave,HttpStatus.OK);
         }
     }
     @PostMapping("qry/master/unit/listAll")
@@ -81,12 +100,13 @@ public class UnitController {
         responList.setListUnit(unitDtoList);
         responList.setDataOfRecord(unitDtoList.size());
 
-        response.put("Status","S");
-        response.put("code",201);
-        response.put("message","Process Successed");
-        response.put("data",responList);
+        ResponseDto resDto = new ResponseDto();
+        resDto.setStatus("S");
+        resDto.setCode(201);
+        resDto.setMessage("Process Successed");
+        resDto.setData(responList);
 
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(resDto,HttpStatus.OK);
     }
     @GetMapping("qry/master/unit/get/{unitCode}")
     public ResponseEntity<?> getId(
@@ -98,10 +118,11 @@ public class UnitController {
             return new ResponseEntity<>("No Data Found",HttpStatus.NO_CONTENT);
         }
         UnitDto unit = unitService.UnitId(unitcode);
-        response.put("Status","S");
-        response.put("code",201);
-        response.put("message","Process Successed");
-        response.put("data",unit);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        ResponseDto resDto = new ResponseDto();
+        resDto.setStatus("S");
+        resDto.setCode(201);
+        resDto.setMessage("Process Successed");
+        resDto.setData(unit);
+        return new ResponseEntity<>(resDto,HttpStatus.OK);
     }
 }

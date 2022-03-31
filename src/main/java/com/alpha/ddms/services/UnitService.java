@@ -14,6 +14,7 @@ import java.util.*;
 @Transactional
 public class UnitService {
     @Autowired UnitRepository unitRepository;
+    @Autowired DealerRepository dealerRepository;
     public UnitModel saveData(UnitModel unit){
         return unitRepository.save(unit);
     }
@@ -48,7 +49,8 @@ public class UnitService {
             UnitDto unitDto = new UnitDto();
             unitDto.setUnitCode(unit.getUnit_id());
             unitDto.setUnitSeriesName(unit.getUnit_series_name());
-            unitDto.setDealerCode(unit.getDealerModel().getDealer_code());
+            Optional<DealerModel>dealer = dealerRepository.findById(dealerId);
+            unitDto.setDealerCode(dealer.get().getDealer_code());
             unitDto.setUnitQuantity(unit.getUnit_quantity());
             unitDto.setUnitColor(unit.getUnit_color());
             unitDto.setUnitStatus(unit.getUnit_status());

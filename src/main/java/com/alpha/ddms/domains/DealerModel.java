@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "mst_dealer")
 @Getter @Setter
-public class DealerModel {
+public class DealerModel implements Serializable{
     @Id
     @Column(name = "dealer_code", nullable = false, length = 50)
     private String dealer_code;
