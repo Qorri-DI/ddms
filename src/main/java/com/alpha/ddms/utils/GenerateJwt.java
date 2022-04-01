@@ -1,4 +1,4 @@
-package com.alpha.ddms.Utils;
+package com.alpha.ddms.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

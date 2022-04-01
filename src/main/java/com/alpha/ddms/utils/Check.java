@@ -1,4 +1,4 @@
-package com.alpha.ddms.Utils;
+package com.alpha.ddms.utils;
 
 public class Check {
     public static boolean isNullOrEmpty(String param){
