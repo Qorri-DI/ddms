@@ -1,4 +1,4 @@
-package com.alpha.ddms.DTO;
+package com.alpha.ddms.dto;
 
 import lombok.Getter;
 import lombok.Setter;
