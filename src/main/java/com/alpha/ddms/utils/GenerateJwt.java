@@ -23,7 +23,7 @@ public class GenerateJwt {
                 .setIssuedAt(now)
                 .setSubject("bootcamp")
                 .setIssuer("EKSAD")
-                .setExpiration(new Date(System.currentTimeMillis()+15*1000))
+                .setExpiration(new Date(System.currentTimeMillis()+60*1000))
                 .signWith(SignatureAlgorithm.HS256,"PASSWORD");
 
         return builder.compact();

@@ -21,19 +21,19 @@ public class DealerController {
     @PostMapping("save")
     public ResponseEntity<Object> saveDealer(
             @RequestBody final Map<String, Object> req,
-            @RequestHeader("token") String token
+            @RequestHeader(required = false, value ="token") String token,
+            @RequestHeader(required = false, value ="userId") String userId
     ) {
-        Claims claims = GenerateJwt.validateToken(token);
-        String id = claims.getId();
-        if(id == claims.getId()) {
-            String dealer_code = req.get("dealerId").toString();
-            String dealer_name = req.get("dealerName").toString();
-            String dealer_class = req.get("dealerClass").toString();
-            String telp_number = req.get("telpNumber").toString();
-            String alamat = req.get("alamat").toString();
-            String dealer_ext_code = req.get("dealerExtCode").toString();
-            String dealer_status = req.get("dealerStatus").toString();
+        String dealer_code = req.get("dealerId").toString();
+        String dealer_name = req.get("dealerName").toString();
+        String dealer_class = req.get("dealerClass").toString();
+        String telp_number = req.get("telpNumber").toString();
+        String alamat = req.get("alamat").toString();
+        String dealer_ext_code = req.get("dealerExtCode").toString();
+        String dealer_status = req.get("dealerStatus").toString();
 
+        Claims claims = GenerateJwt.validateToken(token);
+        if(userId.equals(claims.getId())) {
             DealerDTO dto = new DealerDTO();
             DealerModel dealerModel = new DealerModel();
             Optional<DealerModel> dealerCode = dealerService.findByDealerCode(dealer_code);
@@ -118,8 +118,27 @@ public class DealerController {
                 return new ResponseEntity<>(dt, HttpStatus.OK);
             }
         }else{
-            return new ResponseEntity<>("Error Bad Request",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("useId atau token salah",HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("createJwt")
+    public ResponseEntity<Map<String, Object>> login(
+            @RequestHeader("userId")String userId,
+            @RequestBody final Map<String, Object> request
+    ) {
+        Map<String, Object> ret = new HashMap<>();
+        String dealer_code = request.get("dealerId").toString();
+
+        Optional<DealerModel> cek = dealerService.findByDealerCode(dealer_code);
+
+        if (!cek.isPresent()) {
+            ret.put("status", "DealerId tidak terdaftar");
+        } else {
+            String token = GenerateJwt.createToken(userId);
+            ret.put("token", token);
+        }
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
 }
