@@ -4,6 +4,7 @@ import com.alpha.ddms.common.*;
 import com.alpha.ddms.domains.*;
 import com.alpha.ddms.dto.*;
 import com.alpha.ddms.services.*;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,11 @@ public class UnitController {
 
     @PostMapping("save")
     public ResponseEntity<?> UnitSave(
+            @RequestHeader(value = "token") String token,
             @RequestBody Map<String, Object> req
     ){
+        Claims claims = JWTGenerate.validToken(token);
+        String id = claims.getId();
         String unitcode = req.get("unitCode").toString();
         String unitseriesname = req.get("unitSeriesName").toString();
         String dealerid = req.get("dealerId").toString();

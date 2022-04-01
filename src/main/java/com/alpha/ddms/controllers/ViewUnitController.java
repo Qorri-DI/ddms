@@ -5,6 +5,7 @@ import com.alpha.ddms.configuration.ConfigProperties;
 import com.alpha.ddms.domains.*;
 import com.alpha.ddms.dto.*;
 import com.alpha.ddms.services.*;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +22,11 @@ public class ViewUnitController {
 
     @PostMapping("listAll")
     public ResponseEntity<?> listAll(
+            @RequestHeader(value = "token") String token,
             @RequestBody Map<String, Object> req
     ){
-
+        Claims claims = JWTGenerate.validToken(token);
+        String id = claims.getId();
         String unitstatus = req.get("unitStatus").toString();
         String unitseriesname = req.get("unitSeriesName").toString();
         String dealerid = req.get("dealerId").toString();
@@ -38,7 +41,7 @@ public class ViewUnitController {
             return new ResponseEntity<>("Error Bad Request",HttpStatus.BAD_REQUEST);
         }
         int limit = 0;
-        if (limits.isEmpty() || limits.equals("")/* || limet == 0*/){
+        if (limits.isEmpty() || limits.trim().equals("")/* || limet == 0*/){
             limit = ConfigProperties.getConstant_max_limit();
         }else{
             limit = Integer.parseInt(limits);
@@ -68,8 +71,11 @@ public class ViewUnitController {
 
     @GetMapping("get/{unitCode}")
     public ResponseEntity<?> getId(
+            @RequestHeader(value = "token") String token,
             @PathVariable("unitCode") String unitcode
     ){
+        Claims claims = JWTGenerate.validToken(token);
+        String id = claims.getId();
         Map<String,Object> response = new HashMap<>();
         Optional<UnitModel> cekIdUnit = unitService.findByIdunit(unitcode);
         if (!Checks.isNullOrEmpty(unitcode)){
