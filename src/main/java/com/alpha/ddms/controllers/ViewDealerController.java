@@ -27,11 +27,12 @@ public class ViewDealerController {
     @PostMapping("listAll")
     public ResponseEntity<Object> listAll(
             @RequestHeader("token")String token,
+            @RequestHeader("userId")String userId,
             @RequestBody final Map<String, Object> request
     ) {
         Claims claims = GenerateJwt.validateToken(token);
         String id = claims.getId();
-        if (id == claims.getId()) {
+        if (id.equals(userId)) {
             String dealer_code = request.get("dealerId").toString();
             String dealer_name = request.get("dealerName").toString().toLowerCase(Locale.ROOT);
             String dealer_status = request.get("dealerStatus").toString().toLowerCase(Locale.ROOT);
@@ -54,17 +55,18 @@ public class ViewDealerController {
                 return new ResponseEntity<>(dl, HttpStatus.OK);
             }
         }else{
-            return new ResponseEntity<>("Error Bad Request",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("UserId Salah",HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping(value = "get/{dealerId}")
     public ResponseEntity<Object> detById(
             @RequestHeader("token")String token,
+            @RequestHeader("userId")String userId,
             @PathVariable String dealerId
     ) {
         Claims claims = GenerateJwt.validateToken(token);
         String id = claims.getId();
-        if (id == claims.getId()) {
+        if (id.equals(userId)) {
             DealerDTO dealerDTOList = new DealerDTO();
             try {
                 dealerDTOList = dealerService.dealerById(dealerId);
@@ -83,26 +85,8 @@ public class ViewDealerController {
                 return new ResponseEntity<>("data tidak ada", HttpStatus.BAD_REQUEST);
             }
         }else {
-            return new ResponseEntity<>("No Data Found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("UserId Salah",HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("createJwt")
-    public ResponseEntity<Map<String, Object>> login(
-            @RequestBody final Map<String, Object> request
-    ) {
-        Map<String, Object> ret = new HashMap<>();
-        String userId = request.get("userId").toString();
-        String dealer_code = request.get("dealerId").toString();
-
-        Optional<DealerModel> cek = dealerService.findByDealerCode(dealer_code);
-
-        if (!cek.isPresent()) {
-            ret.put("status", "DealerId tidak terdaftar");
-        } else {
-            String token = GenerateJwt.createToken(userId + dealer_code);
-            ret.put("token", token);
-        }
-        return new ResponseEntity<>(ret, HttpStatus.OK);
-    }
 }
