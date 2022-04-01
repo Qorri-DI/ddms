@@ -2,7 +2,9 @@ package com.alpha.ddms.services;
 
 import com.alpha.ddms.dto.DealerDTO;
 import com.alpha.ddms.domains.DealerModel;
+import com.alpha.ddms.models.ViewDealer;
 import com.alpha.ddms.repositories.DealerRepository;
+import com.alpha.ddms.repositories.ViewDealerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,8 @@ import java.util.Optional;
 public class DealerService {
     @Autowired
     DealerRepository dealerRepository;
+    @Autowired
+    ViewDealerRepository viewDealerRepository;
 
     public Optional<DealerModel> findByDealerCode(String dealer_code) {
         return dealerRepository.findById(dealer_code);
@@ -30,27 +34,27 @@ public class DealerService {
         return dealerRepository.save(data);
     }
     public List<DealerDTO> listAll(String dealer_code,String dealer_status, String dealer_name, int offset, int limit){
-        Page<DealerModel> getAll = dealerRepository.getAllPage((PageRequest.of(offset, limit)),dealer_code,dealer_status,dealer_name);
+        Page<ViewDealer> getAll = viewDealerRepository.getAllPage((PageRequest.of(offset, limit)),dealer_code,dealer_status,dealer_name);
         List<DealerDTO> dealerDTOList = new ArrayList<>();
-        List<DealerModel> dealerModels= getAll.toList();
+        List<ViewDealer> dealerModels= getAll.toList();
 
 
-        for (DealerModel dealerModel : dealerModels){
+        for (ViewDealer viewDealer : dealerModels){
             DealerDTO dd = new DealerDTO();
 
-            dd.setDealerId(dealerModel.getDealer_code());
-            dd.setDealerName(dealerModel.getDealer_name());
-            dd.setDealerClass(dealerModel.getDealer_class());
-            dd.setTelpNumber(dealerModel.getTelp_number());
-            dd.setAlamat(dealerModel.getAlamat());
-            dd.setDealerExCode(dealerModel.getDealer_ext_code());
-            dd.setDealerStatus(dealerModel.getDealer_status());
+            dd.setDealerId(viewDealer.getDealer_code());
+            dd.setDealerName(viewDealer.getDealer_name());
+            dd.setDealerClass(viewDealer.getDealer_class());
+            dd.setTelpNumber(viewDealer.getTelp_number());
+            dd.setAlamat(viewDealer.getAlamat());
+            dd.setDealerExCode(viewDealer.getDealer_ext_code());
+            dd.setDealerStatus(viewDealer.getDealer_status());
             dealerDTOList.add(dd);
         }
         return dealerDTOList;
     }
     public DealerDTO dealerById (String dealerId){
-        DealerModel ById =dealerRepository.findByDealerId(dealerId);
+        ViewDealer ById =viewDealerRepository.findByDealerId(dealerId);
         DealerDTO ddo = new DealerDTO();
 
         ddo.setDealerId(dealerId);
