@@ -40,13 +40,15 @@ public class ViewUnitController {
         int limit = 0;
         if (limits.isEmpty() || limits.equals("")/* || limet == 0*/){
             limit = ConfigProperties.getConstant_max_limit();
+        }else{
+            limit = Integer.parseInt(limits);
         }
         int offset =0;
         if (offsets.isEmpty() || offsets.equals("")/*|| offsat == 0*/){
             offset = 0;
+        }else {
+            offset = Integer.parseInt(offsets);
         }
-        limit = Integer.parseInt(limits);
-        offset = Integer.parseInt(offsets);
         List<UnitDto> unitDtoList = unitService.findByUnit(unitstatus,unitseriesname,dealerid,limit,offset);
         if (unitDtoList.size() == 0){
             return new ResponseEntity<>("No Data Found",HttpStatus.NO_CONTENT);
