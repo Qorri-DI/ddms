@@ -45,6 +45,8 @@ public class ViewUnitController {
         if (offsets.isEmpty() || offsets.equals("")/*|| offsat == 0*/){
             offset = 0;
         }
+        limit = Integer.parseInt(limits);
+        offset = Integer.parseInt(offsets);
         List<UnitDto> unitDtoList = unitService.findByUnit(unitstatus,unitseriesname,dealerid,limit,offset);
         if (unitDtoList.size() == 0){
             return new ResponseEntity<>("No Data Found",HttpStatus.NO_CONTENT);
