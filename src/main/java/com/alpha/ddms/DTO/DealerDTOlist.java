@@ -1,6 +1,4 @@
-package com.alpha.ddms.DTO;
-
-import com.alpha.ddms.domains.DealerModel;
+package com.alpha.ddms.dto;
 
 import java.util.List;
 

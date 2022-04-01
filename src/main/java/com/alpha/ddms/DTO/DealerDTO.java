@@ -1,4 +1,4 @@
-package com.alpha.ddms.DTO;
+package com.alpha.ddms.dto;
 
 public class DealerDTO {
     private String dealerId;
