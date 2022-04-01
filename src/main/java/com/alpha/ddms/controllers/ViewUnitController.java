@@ -27,6 +27,7 @@ public class ViewUnitController {
     ){
         Claims claims = JWTGenerate.validToken(token);
         String id = claims.getId();
+        if (id == claims.getId()){
         String unitstatus = req.get("unitStatus").toString();
         String unitseriesname = req.get("unitSeriesName").toString();
         String dealerid = req.get("dealerId").toString();
@@ -67,6 +68,9 @@ public class ViewUnitController {
         resDto.setData(responList);
 
         return new ResponseEntity<>(resDto,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("Error Bad Request",HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("get/{unitCode}")
@@ -76,6 +80,7 @@ public class ViewUnitController {
     ){
         Claims claims = JWTGenerate.validToken(token);
         String id = claims.getId();
+        if (id == claims.getId()){
         Map<String,Object> response = new HashMap<>();
         Optional<UnitModel> cekIdUnit = unitService.findByIdunit(unitcode);
         if (!Checks.isNullOrEmpty(unitcode)){
@@ -92,6 +97,9 @@ public class ViewUnitController {
             }
         }else {
             return new ResponseEntity<>("Error Bad Request",HttpStatus.BAD_REQUEST);
+        }
+        }else {
+        return new ResponseEntity<>("Error Bad Request",HttpStatus.BAD_REQUEST);
         }
     }
 }
