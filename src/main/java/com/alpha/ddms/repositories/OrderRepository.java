@@ -15,11 +15,11 @@ public interface OrderRepository extends JpaRepository<OrderModel,String> {
     Optional<OrderModel> findLatestId(String orderId);
 
     @Query("select o from OrderModel o where " +
-            "o.dealerModel = concat('%',?1,'%')  and " +
+            "o.dealerModel like concat('%',?1,'%')  and " +
             "lower(o.plat_nomor) like concat('%',?2,'%') and " +
             "lower(o.nomor_mesin) like concat('%',?3,'%') and " +
             "lower(o.nomor_rangka) like concat('%',?4,'%') and " +
-            "o.payment_status = ?5")
+            "o.payment_status like ?5")
     Page<OrderModel> getAllOrder(DealerModel dealerModel,
                                  String platNomor,
                                  String nomor_mesin,

@@ -18,17 +18,17 @@ public class CustomerRequestDto {
     private String customerStatus;
 
     public CustomerRequestDto(String customerId,
-                              @NonNull String customerName,
-                              @NonNull String dealerId,
-                              @NonNull String customerGender,
-                              @NonNull String customerNik,
-                              @NonNull String customerKk,
-                              @NonNull String customerEmail,
-                              @NonNull String customerAddress,
-                              @NonNull String customerTelp,
-                              @NonNull String customerHp,
-                              @NonNull String salesId,
-                              @NonNull String customerStatus) {
+                               String customerName,
+                               String dealerId,
+                               String customerGender,
+                               String customerNik,
+                               String customerKk,
+                               String customerEmail,
+                               String customerAddress,
+                               String customerTelp,
+                               String customerHp,
+                               String salesId,
+                               String customerStatus) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.dealerId = dealerId;
@@ -41,6 +41,24 @@ public class CustomerRequestDto {
         this.customerHp = customerHp;
         this.salesId = salesId;
         this.customerStatus = customerStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerRequestDto{" +
+                "customerId='" + customerId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", dealerId='" + dealerId + '\'' +
+                ", customerGender='" + customerGender + '\'' +
+                ", customerNik='" + customerNik + '\'' +
+                ", customerKk='" + customerKk + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", customerAddress='" + customerAddress + '\'' +
+                ", customerTelp='" + customerTelp + '\'' +
+                ", customerHp='" + customerHp + '\'' +
+                ", salesId='" + salesId + '\'' +
+                ", customerStatus='" + customerStatus + '\'' +
+                '}';
     }
 
     public String getCustomerId() {

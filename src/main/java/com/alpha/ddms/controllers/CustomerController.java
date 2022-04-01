@@ -5,8 +5,6 @@ import com.alpha.ddms.domains.CustomerModel;
 import com.alpha.ddms.dto.CustomerRequestDto;
 import com.alpha.ddms.dto.ResponseDto;
 import com.alpha.ddms.services.CustomerService;
-import org.graalvm.compiler.core.common.util.Util;
-import org.hibernate.validator.cfg.defs.EmailDef;
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,10 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.Email;
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/ddms/v1/qry/master/customer")
@@ -39,7 +35,7 @@ public class CustomerController{
         if (dto.getCustomerNik().length() < 16){
             return new ResponseEntity<>("format NIK salah",HttpStatus.BAD_REQUEST);
         }
-        if (dto.getCustomerId().isEmpty() || dto.getCustomerId() == null){
+        if (dto.getCustomerId() == null||dto.getCustomerId().isEmpty()){
 
             String id = Utils.generateLocalDateId();
             dto.setCustomerId(id);
@@ -48,8 +44,8 @@ public class CustomerController{
 
 
         }else if (customerService.findById(dto.getCustomerId()).isPresent()){
-            customerService.updateCustomer(dto);
-            return new ResponseEntity<>(new ResponseDto<>("S",201,"updated",dto),HttpStatus.OK);
+            CustomerModel update = customerService.updateCustomer(dto);
+            return new ResponseEntity<>(new ResponseDto<>("S",201,"updated",update),HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -81,10 +77,10 @@ public class CustomerController{
 
     @GetMapping("get/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable String id){
-        if (!customerService.findById(id).isPresent()){
-            return new ResponseEntity<>("tidak ada customer dengan id " + id,HttpStatus.NOT_FOUND);
-        }else if (Utils.checkId(id)){
+        if (Utils.checkId(id)){
             return new ResponseEntity<>("fromat id salah",HttpStatus.BAD_REQUEST);
+        }else if (!customerService.findById(id).isPresent()){
+            return new ResponseEntity<>("tidak ada customer dengan id " + id,HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(customerService.findById(id),HttpStatus.OK);
     }

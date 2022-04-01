@@ -65,41 +65,43 @@ public class CustomerService {
         customerRepository.save(save);
     }
 
-    public void updateCustomer(CustomerRequestDto dto){
+    public CustomerModel updateCustomer(CustomerRequestDto dto){
         CustomerModel update = customerRepository.findById(dto.getCustomerId()).get();
-        if (dto.getCustomerName() != null){
-            update.setCustomer_name(dto.getCustomerName());
+        System.out.println(dto);
+        if (!dto.getCustomerName().isEmpty()){
+            update.setCustomer_name(dto.getCustomerName());//debug
         }
-        if (dto.getDealerId() != null){
+        if (!dto.getDealerId().isEmpty()){
             update.setDealerModel(dealerRepository.findById(dto.getDealerId()).get());
         }
-        if (dto.getCustomerGender() != null){
-            update.setCustomer_name(dto.getCustomerGender());
+        if (!dto.getCustomerGender().isEmpty()){
+            update.setCustomer_gender(dto.getCustomerGender());
         }
-        if (dto.getCustomerNik() != null){
+        if ( !dto.getCustomerNik().isEmpty()){
             update.setCustomer_nik(dto.getCustomerNik());
         }
-        if (dto.getCustomerKk() != null){
+        if (!dto.getCustomerKk().isEmpty()){
             update.setCustomer_kk(dto.getCustomerKk());
         }
-        if (dto.getCustomerEmail() != null){
+        if (!dto.getCustomerEmail().isEmpty()){
             update.setCustomer_email(dto.getCustomerEmail());
         }
-        if (dto.getCustomerAddress() != null){
+        if ( !dto.getCustomerAddress().isEmpty()){
             update.setCustomer_address(dto.getCustomerAddress());
         }
-        if (dto.getCustomerTelp() != null){
+        if ( !dto.getCustomerTelp().isEmpty()){
             update.setCustomer_telp_number(dto.getCustomerTelp());
         }
-        if (dto.getCustomerHp() != null){
+        if (!dto.getCustomerHp().isEmpty()){
             update.setCustomer_hp_number(dto.getCustomerHp());
         }
-        if (dto.getSalesId() != null){
+        if (!dto.getSalesId().isEmpty()){
             update.setSalesModel(salesRepository.findById(dto.getSalesId()).get());
         }
-        if (dto.getCustomerStatus() != null){
+        if (!dto.getCustomerStatus().isEmpty()){
             update.setCustomer_status(dto.getCustomerStatus());
         }
         customerRepository.save(update);
+        return update;
     }
 }

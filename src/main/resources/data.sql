@@ -98,3 +98,24 @@ insert into mst_ppn(description, dealer_code, effective_start_date, effective_en
 values('ppn 6','100001',now(),now(),'6','5','ACTIVE');
 
 create or replace view vw_mst_sales as select * from mst_sales;
+--
+--insert into trx_order (order_id,unit_id,dealer_code,sales_id,customer_id,minimum_payment,
+--total_value,order_value,offtheroad_value,ppn,plat_nomor,nomor_mesin,
+--nomor_rangka,is_leasing,payment_status,unit_status) values
+--('1', -- order id
+--'202203201010570000001', -- unit id
+--'100002',-- dealer code
+--'202203192010570001111',-- sales id
+--'202202181010570005001',-- customer id
+--100000.0, --minimum payment
+--14500000.0, -- total value
+--1500000.0, --order value
+--15000000.0,-- off the road
+--500000.0,-- discount
+--14486.0,--ppn
+--'B 1234 SOQ',
+--'KF21E 1400176',
+--'KF2111LK400568',
+--'YES',
+--'PARTIAL PAID',
+--'IN_STOCK')

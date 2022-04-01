@@ -44,6 +44,7 @@ public class OrderService {
                 nomor_rangka,
                 paymentStatus,
                 PageRequest.of(offset,limit));
+        System.out.println(page.getTotalElements());
         List<OrderModel> order = page.toList();
         return order;
     }

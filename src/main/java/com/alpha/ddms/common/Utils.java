@@ -21,7 +21,10 @@ public class Utils {
     public static String generateLocalDateId(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssnnnn");
         String date = LocalDateTime.now().format(formatter);
-        return date;
+        String first = date.substring(0,9);
+        String second = date.substring(10,17);
+        String  complete = first + "24" + second;
+        return complete;
     }
 
     public static Boolean checkId(String id){
