@@ -7,7 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface ViewDealerRepository  extends JpaRepository<ViewDealer, String> {
+    @Query(value = "select * from vw_mst_dealer where dealer_code=:dealerId",nativeQuery = true)
+    Optional<ViewDealer> findByCodeView(String dealerId);
 
     @Query(value = "select * from vw_mst_dealer where dealer_code like :dealerId",nativeQuery = true)
     ViewDealer findByDealerId(String dealerId);

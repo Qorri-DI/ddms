@@ -29,6 +29,9 @@ public class DealerService {
     public Optional<DealerModel> findByGetId(String dealerId) {
         return dealerRepository.findByCode(dealerId);
     }
+    public Optional<ViewDealer> findByGetIdView(String dealerId) {
+        return viewDealerRepository.findByCodeView(dealerId);
+    }
 
     public DealerModel save(DealerModel data){
         return dealerRepository.save(data);
