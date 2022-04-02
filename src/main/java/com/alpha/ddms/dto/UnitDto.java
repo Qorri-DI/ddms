@@ -1,6 +1,5 @@
 package com.alpha.ddms.dto;
 
-import com.alpha.ddms.domains.DealerModel;
 import lombok.*;
 
 @Getter @Setter
