@@ -1,9 +1,9 @@
 package com.alpha.ddms.controllers;
 
+import com.alpha.ddms.common.*;
 import com.alpha.ddms.dto.*;
 import com.alpha.ddms.models.ViewDealer;
 import com.alpha.ddms.services.DealerService;
-import com.alpha.ddms.utils.*;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -26,7 +26,7 @@ public class ViewDealerController {
     ) {
         Map<String, Object> ret = new HashMap<>();
         try {
-            Claims claims = GenerateJwt.validateToken(token);
+            Claims claims = JWTGenerate.validToken(token);
             String id = claims.getId();
             if (id.equals(userId)) {
                 String dealer_code = request.get("dealerId").toString();
@@ -74,14 +74,14 @@ public class ViewDealerController {
 
         Map<String, Object> ret = new HashMap<>();
         try {
-            Claims claims = GenerateJwt.validateToken(token);
+            Claims claims = JWTGenerate.validToken(token);
             String id = claims.getId();
             if (id.equals(userId)) {
                 DealerDTO dealerDTOList = new DealerDTO();
                 try {
                     dealerDTOList = dealerService.dealerById(dealerId);
                     Optional<ViewDealer> dealerCode = dealerService.findByGetIdView(dealerId);
-                    if (!Check.isNullOrEmpty(dealerId)) {
+                    if (!Checks.isNullOrEmpty(dealerId)) {
                         DealerDtoById dealerDtoById = new DealerDtoById();
                         dealerDtoById.setStatus("S");
                         dealerDtoById.setCode(201);

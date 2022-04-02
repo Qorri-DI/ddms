@@ -19,7 +19,7 @@ public class JWTGenerate {
                 .setIssuedAt(dt)
                 .setSubject("bootcamp")
                 .setIssuer("EKSAD")
-                .setExpiration(new Date(System.currentTimeMillis()+10*1000))
+                .setExpiration(new Date(System.currentTimeMillis()+60*10*1000))
                 .signWith(SignatureAlgorithm.HS256,"PASSWORD");
 
         return buat.compact();

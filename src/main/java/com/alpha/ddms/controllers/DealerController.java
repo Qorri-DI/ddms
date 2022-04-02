@@ -1,12 +1,8 @@
 package com.alpha.ddms.controllers;
 
-import com.alpha.ddms.utils.*;
-import com.alpha.ddms.dto.*;
+import com.alpha.ddms.common.*;
 import com.alpha.ddms.domains.DealerModel;
-import com.alpha.ddms.dto.DealerDTO;
-import com.alpha.ddms.dto.DealerDTOlist;
-import com.alpha.ddms.dto.DealerDtoById;
-import com.alpha.ddms.dto.DealerDtoPost;
+import com.alpha.ddms.dto.*;
 import com.alpha.ddms.services.DealerService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +32,7 @@ public class DealerController {
         String dealer_ext_code = req.get("dealerExtCode").toString();
         String dealer_status = req.get("dealerStatus").toString();
 
-        Claims claims = GenerateJwt.validateToken(token);
+        Claims claims = JWTGenerate.validToken(token);
         if(userId.equals(claims.getId())) {
             DealerDTO dto = new DealerDTO();
             DealerModel dealerModel = new DealerModel();
@@ -72,32 +68,32 @@ public class DealerController {
 
             } else {
                 dealerModel.setDealer_code(dealer_code);
-                if (Check.isNullOrEmpty(dealer_name)) {
+                if (Checks.isNullOrEmpty(dealer_name)) {
                     dealerModel.setDealer_name(dealerCode.get().getDealer_name());
                 } else {
                     dealerModel.setDealer_name(dealer_name);
                 }
-                if (Check.isNullOrEmpty(dealer_class)) {
+                if (Checks.isNullOrEmpty(dealer_class)) {
                     dealerModel.setDealer_class(dealerCode.get().getDealer_class());
                 } else {
                     dealerModel.setDealer_class(dealer_class);
                 }
-                if (Check.isNullOrEmpty(telp_number)) {
+                if (Checks.isNullOrEmpty(telp_number)) {
                     dealerModel.setTelp_number(dealerCode.get().getTelp_number());
                 } else {
                     dealerModel.setTelp_number(telp_number);
                 }
-                if (Check.isNullOrEmpty(alamat)) {
+                if (Checks.isNullOrEmpty(alamat)) {
                     dealerModel.setAlamat(dealerCode.get().getAlamat());
                 } else {
                     dealerModel.setAlamat(alamat);
                 }
-                if (Check.isNullOrEmpty(dealer_ext_code)) {
+                if (Checks.isNullOrEmpty(dealer_ext_code)) {
                     dealerModel.setDealer_ext_code(dealerCode.get().getDealer_ext_code());
                 } else {
                     dealerModel.setDealer_ext_code(dealer_ext_code);
                 }
-                if (Check.isNullOrEmpty(dealer_status)) {
+                if (Checks.isNullOrEmpty(dealer_status)) {
                     dealerModel.setDealer_status(dealerCode.get().getDealer_status());
                 } else {
                     dealerModel.setDealer_status(dealer_status);
@@ -139,7 +135,7 @@ public class DealerController {
         if (!cek.isPresent()) {
             ret.put("status", "DealerId tidak terdaftar");
         } else {
-            String token = GenerateJwt.createToken(userId);
+            String token = JWTGenerate.createToken(userId);
             ret.put("token", token);
         }
         return new ResponseEntity<>(ret, HttpStatus.OK);
