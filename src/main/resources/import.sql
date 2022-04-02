@@ -1,1 +1,1 @@
-create or replace view vs_mst_unit as select * from mst_unit
+create or replace view vs_mst_unit as select * from mst_unit;
