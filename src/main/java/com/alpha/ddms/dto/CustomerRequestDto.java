@@ -1,33 +1,34 @@
 package com.alpha.ddms.dto;
 
+import lombok.NonNull;
 import org.springframework.lang.Nullable;
 
 public class CustomerRequestDto {
-    private final String customerId;
-    private final String customerName;
-    private final String dealerId;
-    private final String customerGender;
-    private final String customerNik;
-    private final String customerKk;
-    private final String customerEmail;
-    private final String customerAddress;
-    private final String customerTelp;
-    private final String customerHp;
-    private final String salesId;
-    private final String customerStatus;
+    private String customerId;
+    private String customerName;
+    private String dealerId;
+    private String customerGender;
+    private String customerNik;
+    private String customerKk;
+    private String customerEmail;
+    private String customerAddress;
+    private String customerTelp;
+    private String customerHp;
+    private String salesId;
+    private String customerStatus;
 
     public CustomerRequestDto(String customerId,
-                              @Nullable String customerName,
-                              @Nullable String dealerId,
-                              @Nullable String customerGender,
-                              @Nullable String customerNik,
-                              @Nullable String customerKk,
-                              @Nullable String customerEmail,
-                              @Nullable String customerAddress,
-                              @Nullable String customerTelp,
-                              @Nullable String customerHp,
-                              @Nullable String salesId,
-                              @Nullable String customerStatus) {
+                              String customerName,
+                              String dealerId,
+                              String customerGender,
+                              String customerNik,
+                              String customerKk,
+                              String customerEmail,
+                              String customerAddress,
+                              String customerTelp,
+                              String customerHp,
+                              String salesId,
+                              String customerStatus) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.dealerId = dealerId;
@@ -40,6 +41,24 @@ public class CustomerRequestDto {
         this.customerHp = customerHp;
         this.salesId = salesId;
         this.customerStatus = customerStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerRequestDto{" +
+                "customerId='" + customerId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", dealerId='" + dealerId + '\'' +
+                ", customerGender='" + customerGender + '\'' +
+                ", customerNik='" + customerNik + '\'' +
+                ", customerKk='" + customerKk + '\'' +
+                ", customerEmail='" + customerEmail + '\'' +
+                ", customerAddress='" + customerAddress + '\'' +
+                ", customerTelp='" + customerTelp + '\'' +
+                ", customerHp='" + customerHp + '\'' +
+                ", salesId='" + salesId + '\'' +
+                ", customerStatus='" + customerStatus + '\'' +
+                '}';
     }
 
     public String getCustomerId() {
@@ -88,5 +107,9 @@ public class CustomerRequestDto {
 
     public String getCustomerStatus() {
         return customerStatus;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }

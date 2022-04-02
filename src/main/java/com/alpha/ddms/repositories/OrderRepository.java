@@ -1,11 +1,8 @@
 package com.alpha.ddms.repositories;
 
-import com.alpha.ddms.domains.DealerModel;
-import com.alpha.ddms.domains.OrderModel;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import com.alpha.ddms.domains.*;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.repository.*;
 
 import java.util.Optional;
 

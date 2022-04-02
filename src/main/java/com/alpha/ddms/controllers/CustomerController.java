@@ -1,14 +1,15 @@
 package com.alpha.ddms.controllers;
 
-import com.alpha.ddms.dto.CustomerRequestDto;
-import com.alpha.ddms.dto.ResponseDto;
+import com.alpha.ddms.common.Utils;
+import com.alpha.ddms.domains.CustomerModel;
+import com.alpha.ddms.dto.*;
 import com.alpha.ddms.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.*;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.util.*;
 
 @RestController
 @RequestMapping("/ddms/v1/qry/master/customer")
@@ -18,15 +19,29 @@ public class CustomerController{
 
     @GetMapping("/save")
     public ResponseEntity<?> postCustomer(@RequestBody CustomerRequestDto dto){
-        if(dto.getCustomerId().length() < 21){
-            return new ResponseEntity<>("id salah",HttpStatus.BAD_REQUEST);
+        if (!dto.getCustomerGender().toUpperCase().equals("GTLK") ){
+            if ( !dto.getCustomerGender().toUpperCase().equals("GTPR")){
+                return new ResponseEntity<>("format gender salah",HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>("format gender salah",HttpStatus.BAD_REQUEST);
         }
-        if (!customerService.findById(dto.getCustomerId()).isPresent()){
+        if(dto.getCustomerEmail().isEmpty()){
+            return new ResponseEntity<>("Email kosong",HttpStatus.BAD_REQUEST);
+        }
+        if (dto.getCustomerNik().length() < 16){
+            return new ResponseEntity<>("format NIK salah",HttpStatus.BAD_REQUEST);
+        }
+        if (dto.getCustomerId() == null||dto.getCustomerId().isEmpty()){
+
+            String id = Utils.generateLocalDateId();
+            dto.setCustomerId(id);
             customerService.saveCustomer(dto);
             return new ResponseEntity<>(new ResponseDto<>("S",201,"created",dto), HttpStatus.CREATED);
+        }else if (customerService.findById(dto.getCustomerId()).isPresent()){
+            CustomerModel update = customerService.updateCustomer(dto);
+            return new ResponseEntity<>(new ResponseDto<>("S",201,"updated",update),HttpStatus.OK);
         }else {
-            customerService.updateCustomer(dto);
-            return new ResponseEntity<>(new ResponseDto<>("S",201,"updated",dto),HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
@@ -34,18 +49,31 @@ public class CustomerController{
     public ResponseEntity<?> getAllCustomer(@RequestBody HashMap<String,String > request){
         String customerName = request.get("customerName");
         String dealerId = request.get("dealerId");
-        Integer offset =  Integer.parseInt(request.get("offset"));
-        Integer limit = Integer.parseInt(request.get("limit"));
+        String off = request.get("offset");
+        String limt = request.get("limit");
+        if(off == null || off.isEmpty()){
+            off= "0";
+        }
+        Integer offset =  Integer.parseInt(off);
+        if (limt == null || limt.isEmpty()){
+            limt = "0";
+        }
+        Integer limit = Integer.parseInt(limt);
+        Page<CustomerModel> cm = customerService.getAllCustomer(dealerId,customerName,offset,limit);
+        if(cm.getTotalElements() == 0){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         HashMap<String,Object> map = new HashMap<>();
         map.put("listCustomer",customerService.getAllCustomer(dealerId,customerName,offset,limit).toList());
         map.put("dataOfRecord",customerService.getAllCustomer(dealerId,customerName,offset,limit).getTotalElements());
-        System.out.println(map);
         return new ResponseEntity<>(new ResponseDto<>("S",200,"proses successed",map),HttpStatus.OK);
     }
 
     @GetMapping("get/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable String id){
-        if (!customerService.findById(id).isPresent()){
+        if (Utils.checkId(id)){
+            return new ResponseEntity<>("fromat id salah",HttpStatus.BAD_REQUEST);
+        }else if (!customerService.findById(id).isPresent()){
             return new ResponseEntity<>("tidak ada customer dengan id " + id,HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(customerService.findById(id),HttpStatus.OK);
