@@ -80,26 +80,26 @@ public class ViewUnitController {
     ){
         Claims claims = JWTGenerate.validToken(token);
         String id = claims.getId();
-        if (id == claims.getId()){
-        Map<String,Object> response = new HashMap<>();
-        Optional<UnitModel> cekIdUnit = unitService.findByIdunit(unitcode);
-        if (!Checks.isNullOrEmpty(unitcode)){
-            if (cekIdUnit.isEmpty()) {
-                return new ResponseEntity<>("No Data Found", HttpStatus.NO_CONTENT);
-            }else{
-                UnitDto unit = unitService.UnitId(unitcode);
-                ResponseDto resDto = new ResponseDto();
-                resDto.setStatus("S");
-                resDto.setCode(201);
-                resDto.setMessage("Process Successed");
-                resDto.setData(unit);
-                return new ResponseEntity<>(resDto,HttpStatus.OK);
+        if (id == claims.getId()) {
+            Map<String, Object> response = new HashMap<>();
+            Optional<UnitModel> cekIdUnit = unitService.findByIdunit(unitcode);
+            if (!Checks.isNullOrEmpty(unitcode)) {
+                if (cekIdUnit.isEmpty()) {
+                    return new ResponseEntity<>("No Data Found", HttpStatus.NO_CONTENT);
+                } else {
+                    UnitDto unit = unitService.UnitId(unitcode);
+                    ResponseDto resDto = new ResponseDto();
+                    resDto.setStatus("S");
+                    resDto.setCode(201);
+                    resDto.setMessage("Process Successed");
+                    resDto.setData(unit);
+                    return new ResponseEntity<>(resDto, HttpStatus.OK);
+                }
+            } else {
+                return new ResponseEntity<>("Error Bad Request", HttpStatus.BAD_REQUEST);
             }
         }else {
             return new ResponseEntity<>("Error Bad Request",HttpStatus.BAD_REQUEST);
-        }
-        }else {
-        return new ResponseEntity<>("Error Bad Request",HttpStatus.BAD_REQUEST);
         }
     }
 }
