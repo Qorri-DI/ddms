@@ -15,7 +15,7 @@ public class CreateTokenController {
     @Autowired
     DealerService dealerService;
     @GetMapping("createToken")
-    public ResponseEntity<?> tokenFlashsale(
+    public ResponseEntity<?> createToken(
             @RequestBody final Map<String, Object> req
     ){
         //
