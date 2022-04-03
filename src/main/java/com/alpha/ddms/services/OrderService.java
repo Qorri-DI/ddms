@@ -33,7 +33,7 @@ public class OrderService {
         return orderRepository.findById(orderId);
     }
 
-    public List<OrderModel> getAllOrder(String dealerId,String platNomor,
+    public Page<OrderModel> getAllOrder(String dealerId,String platNomor,
                                         String nomor_mesin,
                                         String nomor_rangka,
                                         String paymentStatus,
@@ -44,9 +44,10 @@ public class OrderService {
                 nomor_rangka,
                 paymentStatus,
                 PageRequest.of(offset,limit));
-        System.out.println(page.getTotalElements());
+
         List<OrderModel> order = page.toList();
-        return order;
+        return page;
     }
+
 
 }

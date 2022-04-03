@@ -4,6 +4,7 @@ import com.alpha.ddms.common.Utils;
 import com.alpha.ddms.domains.CustomerModel;
 import com.alpha.ddms.dto.CustomerRequestDto;
 import com.alpha.ddms.dto.ResponseDto;
+import com.alpha.ddms.models.ViewCustomer;
 import com.alpha.ddms.services.CustomerService;
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,6 @@ public class CustomerController{
                 return new ResponseEntity<>("format gender salah",HttpStatus.BAD_REQUEST);
             }
             return new ResponseEntity<>("format gender salah",HttpStatus.BAD_REQUEST);
-        }
-        if(dto.getCustomerEmail().isEmpty()){
-            return new ResponseEntity<>("Email kosong",HttpStatus.BAD_REQUEST);
-        }
-        if (dto.getCustomerNik().length() < 16){
-            return new ResponseEntity<>("format NIK salah",HttpStatus.BAD_REQUEST);
         }
         if (dto.getCustomerId() == null||dto.getCustomerId().isEmpty()){
 
@@ -65,13 +60,13 @@ public class CustomerController{
             limt = "0";
         }
         Integer limit = Integer.parseInt(limt);
-        Page<CustomerModel> cm = customerService.getAllCustomer(dealerId,customerName,offset,limit);
+        Page<ViewCustomer> cm = customerService.getAllCustomer(dealerId,customerName,offset,limit);
         if(cm.getTotalElements() == 0){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         HashMap<String,Object> map = new HashMap<>();
-        map.put("listCustomer",customerService.getAllCustomer(dealerId,customerName,offset,limit).toList());
-        map.put("dataOfRecord",customerService.getAllCustomer(dealerId,customerName,offset,limit).getTotalElements());
+        map.put("listCustomer",cm.toList());
+        map.put("dataOfRecord",cm.getTotalElements());
         return new ResponseEntity<>(new ResponseDto<>("S",200,"proses successed",map),HttpStatus.OK);
     }
 
@@ -82,7 +77,7 @@ public class CustomerController{
         }else if (!customerService.findById(id).isPresent()){
             return new ResponseEntity<>("tidak ada customer dengan id " + id,HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(customerService.findById(id),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>("S",200,"success",customerService.findById(id)),HttpStatus.OK);
     }
 
 

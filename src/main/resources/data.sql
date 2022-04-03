@@ -98,6 +98,7 @@ insert into mst_ppn(description, dealer_code, effective_start_date, effective_en
 values('ppn 6','100001',now(),now(),'6','5','ACTIVE');
 
 create or replace view vw_mst_sales as select * from mst_sales;
+create or replace view vw_mst_customer as select * from mst_customer;
 --
 --insert into trx_order (order_id,unit_id,dealer_code,sales_id,customer_id,minimum_payment,
 --total_value,order_value,offtheroad_value,ppn,plat_nomor,nomor_mesin,

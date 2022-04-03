@@ -1,22 +1,22 @@
 package com.alpha.ddms.controllers;
 
 import com.alpha.ddms.common.Utils;
+import com.alpha.ddms.configuration.ConfigProperties;
 import com.alpha.ddms.domains.*;
 import com.alpha.ddms.dto.AllOrderRequestDto;
 import com.alpha.ddms.dto.ResponseDto;
 import com.alpha.ddms.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
-@RequestMapping("/ddms/v1/cmd/transaction/order")
+@RequestMapping("/ddms/v1")
 public class OrderController {
 
     @Autowired OrderService orderService;
@@ -25,7 +25,7 @@ public class OrderController {
     @Autowired SalesService salesService;
     @Autowired CustomerService customerService;
 
-    @PostMapping("/save")
+    @PostMapping("/cmd/transaction/order/save")
     public ResponseEntity<?> save(
             @RequestBody Map<String,Object> req
     ){
@@ -53,9 +53,11 @@ public class OrderController {
             if(orderId.equalsIgnoreCase("")){
                 // kalau sales ID tidak diinput create new
                 OrderModel data = new OrderModel();
-                String latestId = orderService.findLatestId(Utils.getCurrentDateTimeString()) == null ?
-                        "0" : orderService.findLatestId(Utils.getCurrentDateTimeString()).substring(13,7);
-                String newId = Utils.generateLatestId(latestId);
+//                String latestId = orderService.findLatestId(Utils.getCurrentDateTimeString()) == null ?
+//                        "0" : orderService.findLatestId(Utils.getCurrentDateTimeString()).substring(13,7);
+//                String newId = Utils.generateLatestId(latestId);
+//
+                String newId = Utils.generateLocalDateId();
 
                 data.setOrder_id(newId);
 
@@ -123,9 +125,18 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/listAll")
+    @PostMapping("/qry/transaction/order/listAll")
     public ResponseEntity<?> getAllOrder(@RequestBody AllOrderRequestDto dto){
-        List<OrderModel> orderModels = orderService.getAllOrder(dto.getDealerId(),
+        if(dto.getDealerId().isEmpty()){
+            return new ResponseEntity<>("tolong masukkan dealer ID",HttpStatus.BAD_REQUEST);
+        }
+        if(dto.getLimit() == 0 || dto.getLimit() == null){
+            dto.setLimit(ConfigProperties.getConstant_max_limit());
+        }
+        if( dto.getOffset() == null){
+            dto.setOffset(0);
+        }
+        Page<OrderModel> orderModels = orderService.getAllOrder(dto.getDealerId(),
                 dto.getPlatNomor(),
                 dto.getNomorMesin(),
                 dto.getNomorRangka(),
@@ -133,9 +144,25 @@ public class OrderController {
                 dto.getOffset(),
                 dto.getLimit());
 
+        if (orderModels.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         HashMap<String,Object> map = new HashMap<>();
         map.put("listOrder",orderModels);
-        map.put("dataOfRecord",orderModels.size());
+        map.put("dataOfRecord",orderModels.getTotalElements());
         return new ResponseEntity<>(new ResponseDto<>("S",200,"success",map),HttpStatus.OK);
+    }
+
+    @GetMapping("/qry/transaction/order/{id}")
+    public ResponseEntity<?> getOrderById(@PathVariable("id") String id){
+//        if(Utils.checkId(id) == false){
+//            return new ResponseEntity<>("format id salah",HttpStatus.BAD_REQUEST);
+//        }
+        if (orderService.findById(id).isPresent()){
+            return new ResponseEntity<>(orderService.findById(id),HttpStatus.OK) ;
+        }else {
+            return new ResponseEntity<>("data kosong", HttpStatus.NO_CONTENT);
+        }
+
     }
 }

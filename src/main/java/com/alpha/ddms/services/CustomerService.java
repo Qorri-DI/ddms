@@ -3,15 +3,18 @@ package com.alpha.ddms.services;
 import com.alpha.ddms.configuration.ConfigProperties;
 import com.alpha.ddms.domains.CustomerModel;
 import com.alpha.ddms.dto.CustomerRequestDto;
+import com.alpha.ddms.models.ViewCustomer;
 import com.alpha.ddms.repositories.CustomerRepository;
 import com.alpha.ddms.repositories.DealerRepository;
 import com.alpha.ddms.repositories.SalesRepository;
+import com.alpha.ddms.repositories.ViewCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.View;
 import javax.transaction.Transactional;
 import java.awt.print.Pageable;
 import java.util.ArrayList;
@@ -23,12 +26,14 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
+    private ViewCustomerRepository viewCustomerRepository;
+    @Autowired
     private DealerRepository dealerRepository;
     @Autowired
     private SalesRepository salesRepository;
 
-    public Page<CustomerModel> getAllCustomer(String dealerId, String customerName, Integer page,Integer limit){
-        Page<CustomerModel> cm = new PageImpl<>(new ArrayList<>());
+    public Page<ViewCustomer> getAllCustomer(String dealerId, String customerName, Integer page,Integer limit){
+        Page<ViewCustomer> cm = new PageImpl<>(new ArrayList<>());
         if(limit == 0 || limit == null){
             limit = ConfigProperties.getConstant_max_limit();
         }
@@ -38,7 +43,7 @@ public class CustomerService {
         if(!dealerRepository.existsById(dealerId)){
             return cm;
         }
-         cm = customerRepository.getAllCustomer(dealerRepository.findById(dealerId).get(),
+         cm = viewCustomerRepository.getAllCustomer(dealerRepository.findById(dealerId).get(),
                 customerName,
                 PageRequest.of(page,limit));
         return cm;
@@ -47,6 +52,8 @@ public class CustomerService {
     public Optional<CustomerModel> findById(String id){
         return customerRepository.findById(id);
     }
+
+    public Optional<ViewCustomer> viewById(String id){return viewCustomerRepository.findById(id);}
 
     public void saveCustomer(CustomerRequestDto dto){
         CustomerModel save = new CustomerModel();

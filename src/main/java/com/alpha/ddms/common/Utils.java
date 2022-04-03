@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Utils {
@@ -19,21 +21,21 @@ public class Utils {
     }
 
     public static String generateLocalDateId(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssnnnn");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddhhmmssnnnn");
         String date = LocalDateTime.now().format(formatter);
-        String first = date.substring(0,9);
+        String first = date.substring(0,10);
         String second = date.substring(10,17);
         String  complete = first + "24" + second;
         return complete;
     }
 
     public static Boolean checkId(String id){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssnnnn");
-        LocalDateTime.parse(id);
-        try{
-            LocalDateTime.parse(id,formatter);
+        Pattern pattern = Pattern.compile("[0-9]{10}24[0-9]{7}");
+        Matcher matcher = pattern.matcher(id);
+        boolean matchFound = matcher.find();
+        if(matchFound) {
             return true;
-        }catch (DateTimeParseException e){
+        } else {
             return false;
         }
     }
