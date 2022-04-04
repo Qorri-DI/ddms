@@ -1,7 +1,6 @@
 package com.alpha.ddms.domains;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -47,4 +46,12 @@ public class CustomerModel {
 
     @Column(name = "customer_status", nullable = false, length = 10)
     private String customer_status;
+
+    public String getDealerModel() {
+        return dealerModel.getDealer_code();
+    }
+
+//    public String getSalesModel() {
+//        return salesModel.getSales_id();
+//    }
 }

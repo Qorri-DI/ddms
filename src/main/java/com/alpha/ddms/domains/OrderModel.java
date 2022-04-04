@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "trx_order")
@@ -14,21 +13,21 @@ public class OrderModel {
     @Column(name = "order_id", nullable = false, length = 50)
     private String order_id;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "unit_id")
-    private List<UnitModel> unitModel;
+    private UnitModel unitModel;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dealer_code")
-    private List<DealerModel> dealerModel;
+    private DealerModel dealerModel;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "sales_id")
-    private List<SalesModel> salesModel;
+    private SalesModel salesModel;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id")
-    private List<CustomerModel> listCustomerModel;
+    private CustomerModel customerModel;
 
     @Column(name = "minimum_payment", nullable = false)
     private float minimum_payment;
